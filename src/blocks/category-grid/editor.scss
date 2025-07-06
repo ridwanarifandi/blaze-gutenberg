@@ -1,0 +1,94 @@
+/**
+ * Editor styles for Category Grid block
+ */
+
+.blaze-category-grid-editor {
+	.blaze-category-grid-preview {
+		border: 1px dashed #ccc;
+		border-radius: 4px;
+		padding: 20px;
+		background: #f9f9f9;
+	}
+
+	.blaze-categories-grid {
+		margin-bottom: 15px;
+	}
+
+	.blaze-category-card {
+		cursor: default;
+		
+		&:hover {
+			transform: none;
+		}
+	}
+
+	.blaze-grid-info {
+		padding: 15px;
+		background: #fff;
+		border-radius: 4px;
+		border: 1px solid #ddd;
+		font-size: 0.9rem;
+		color: #666;
+
+		p {
+			margin: 0 0 5px 0;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	.blaze-loading {
+		background: #fff;
+		border-radius: 4px;
+		border: 1px solid #ddd;
+	}
+}
+
+// Inspector Controls Styling
+.blaze-category-selection {
+	max-height: 200px;
+	overflow-y: auto;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 10px;
+	margin-bottom: 15px;
+
+	p {
+		margin: 0 0 10px 0;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	.components-checkbox-control {
+		margin-bottom: 8px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		.components-checkbox-control__label {
+			font-size: 0.85rem;
+		}
+	}
+}
+
+// Responsive preview adjustments
+@media (max-width: 1200px) {
+	.blaze-category-grid-editor .blaze-categories-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 900px) {
+	.blaze-category-grid-editor .blaze-categories-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.blaze-category-grid-editor .blaze-categories-grid {
+		grid-template-columns: 1fr;
+	}
+}

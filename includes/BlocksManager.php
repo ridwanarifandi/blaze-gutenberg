@@ -28,6 +28,12 @@ class BlocksManager {
 			'render_callback' => [ $this, 'render_product_slideshow' ],
 			'style' => 'blaze-gutenberg-style',
 		] );
+
+		// Register Category Grid block
+		register_block_type( 'blaze/category-grid', [ 
+			'render_callback' => [ $this, 'render_category_grid' ],
+			'style' => 'blaze-gutenberg-style',
+		] );
 	}
 
 	/**
@@ -91,6 +97,48 @@ class BlocksManager {
 	}
 
 	/**
+	 * Render Category Grid block
+	 */
+	public function render_category_grid( $attributes, $content ) {
+		// Parse attributes with defaults
+		$attributes = wp_parse_args( $attributes, [ 
+			'selectedCategories' => [],
+			'orderBy' => 'name',
+			'order' => 'ASC',
+			'limit' => 12,
+			'columnsDesktop' => 4,
+			'columnsTablet' => 3,
+			'columnsMobile' => 2,
+			'showProductCount' => true,
+			'showDescription' => false,
+			'hideEmpty' => true,
+			'categoryNameColor' => '',
+			'categoryDescriptionColor' => '',
+			'productCountColor' => '',
+		] );
+
+		// Get categories based on attributes
+		$categories = $this->get_categories( $attributes );
+
+		if ( empty( $categories ) ) {
+			return '<div class="blaze-category-grid-empty">' .
+				esc_html__( 'No categories found.', 'blaze-gutenberg' ) .
+				'</div>';
+		}
+
+		// Generate unique ID for this grid
+		$grid_id = 'blaze-category-grid-' . wp_rand( 1000, 9999 );
+
+		// Start output buffering
+		ob_start();
+
+		// Include template
+		include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/category-grid.php';
+
+		return ob_get_clean();
+	}
+
+	/**
 	 * Get products based on attributes
 	 */
 	private function get_products( $attributes ) {
@@ -143,6 +191,49 @@ class BlocksManager {
 		$query = new \WP_Query( $args );
 
 		return $query->posts;
+	}
+
+	/**
+	 * Get categories based on attributes
+	 */
+	private function get_categories( $attributes ) {
+		$args = [ 
+			'taxonomy' => 'product_cat',
+			'hide_empty' => $attributes['hideEmpty'] ?? true,
+			'orderby' => $attributes['orderBy'] ?? 'name',
+			'order' => $attributes['order'] ?? 'ASC',
+			'number' => $attributes['limit'] ?? 12,
+		];
+
+		// Filter by specific category IDs
+		if ( ! empty( $attributes['selectedCategories'] ) ) {
+			$args['include'] = array_map( 'intval', $attributes['selectedCategories'] );
+		}
+
+		$categories = get_terms( $args );
+
+		if ( is_wp_error( $categories ) ) {
+			return [];
+		}
+
+		// Format categories for template
+		$formatted_categories = [];
+		foreach ( $categories as $category ) {
+			$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
+			$image_url = $thumbnail_id ? wp_get_attachment_image_url( $thumbnail_id, 'medium' ) : '';
+
+			$formatted_categories[] = [ 
+				'id' => $category->term_id,
+				'name' => $category->name,
+				'slug' => $category->slug,
+				'description' => $category->description,
+				'count' => $category->count,
+				'image' => $image_url,
+				'link' => get_term_link( $category ),
+			];
+		}
+
+		return $formatted_categories;
 	}
 
 	/**
@@ -207,10 +298,17 @@ class BlocksManager {
 
 		$formatted_categories = [];
 		foreach ( $categories as $category ) {
+			$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
+			$image_url = $thumbnail_id ? wp_get_attachment_image_url( $thumbnail_id, 'medium' ) : '';
+
 			$formatted_categories[] = [ 
 				'id' => $category->term_id,
 				'name' => $category->name,
 				'slug' => $category->slug,
+				'description' => $category->description,
+				'count' => $category->count,
+				'image' => $image_url,
+				'link' => get_term_link( $category ),
 			];
 		}
 

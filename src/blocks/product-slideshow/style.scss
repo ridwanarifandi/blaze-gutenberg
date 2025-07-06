@@ -16,13 +16,13 @@
 	// Full alignment
 	&.alignfull {
 		max-width: none;
-		width: calc(100vw - 1rem);
+		width: 100%;
 	}
 
 	// Responsive adjustments for alignment
 	@media (max-width: 1280px) {
 		&.alignwide {
-			max-width: calc(100vw - 4rem);
+			width: 100%;
 		}
 	}
 
@@ -30,7 +30,7 @@
 		// On mobile, all alignments behave more conservatively
 		&.alignwide,
 		&.alignfull {
-			width: calc(100vw - 1rem);
+			width: 100%;
 		}
 
 		// Default alignment on mobile

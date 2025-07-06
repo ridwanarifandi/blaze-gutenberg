@@ -1,9 +1,10 @@
 /**
  * WordPress dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType } from "@wordpress/blocks";
 
 /**
  * Internal dependencies
  */
-import './product-slideshow';
+import "./product-slideshow";
+import "./category-grid";
