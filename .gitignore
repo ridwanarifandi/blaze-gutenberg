@@ -2,10 +2,7 @@
 node_modules/
 
 # Build files
-assets/js/*.js
 assets/js/*.js.map
-assets/js/*.asset.php
-assets/css/*.css
 assets/css/*.css.map
 
 # Development files
