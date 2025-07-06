@@ -68,8 +68,8 @@
 		// Navigation Arrows
 		.swiper-button-prev,
 		.swiper-button-next {
-			width: 40px;
-			height: 40px;
+			width: 32px;
+			height: 32px;
 			margin-top: -20px;
 			background: var(--primary-bg-color, #1e3a8a);
 			border-radius: 50%;
@@ -103,8 +103,8 @@
 			margin-top: 2rem;
 
 			.swiper-pagination-bullet {
-				width: 12px;
-				height: 12px;
+				width: 8px;
+				height: 8px;
 				background: #ccc;
 				opacity: 1;
 				margin: 0 4px;
@@ -157,15 +157,18 @@
 				top: 10px;
 				right: 10px;
 				z-index: 2;
+				display: flex;
+				gap: 4px;
 
 				.badge {
 					display: block;
 					padding: 4px 8px;
 					border-radius: 12px;
-					font-size: 10px;
+					font-size: 12px;
 					font-weight: bold;
 					text-transform: uppercase;
-					margin-bottom: 4px;
+					margin: 0;
+					line-height: 12px;
 					color: var(--primary-font-color, #ffffff);
 
 					&.sale-badge {
@@ -181,16 +184,16 @@
 
 		// Product Info
 		.product-info {
-			padding: 1rem;
+			padding: 12px;
 			flex-grow: 1;
 			display: flex;
 			flex-direction: column;
 
 			.product-title {
-				font-size: 1rem;
+				font-size: 18px;
 				font-weight: 600;
 				margin: 0 0 0.5rem 0;
-				line-height: 1.4;
+				line-height: 24px;
 				color: #1f2937;
 
 				a {
@@ -209,17 +212,32 @@
 				gap: 4px;
 				margin-bottom: 0.5rem;
 
-				.color-swatch {
-					width: 20px;
-					height: 20px;
+				.color-swatch-border {
+					display: block;
+					width: 32px;
+					height: 32px;
 					border-radius: 50%;
-					border: 2px solid #e5e7eb;
+					border: 1px solid var(--primary-bg-color, #1e3a8a);
+					display: flex;
+					align-items: center;
+					justify-content: center;
 					cursor: pointer;
 					transition: transform 0.2s ease;
+					padding: 2px;
 
 					&:hover {
 						transform: scale(1.1);
 						border-color: var(--primary-bg-color, #1e3a8a);
+					}
+
+					.color-swatch {
+						display: block;
+						width: 24px;
+						height: 24px;
+						border-radius: 50%;
+						border: 1px solid #222;
+						cursor: pointer;
+						transition: transform 0.2s ease;
 					}
 				}
 			}
@@ -254,7 +272,7 @@
 
 				.review-count {
 					font-size: 0.875rem;
-					color: #6b7280;
+					color: #040711;
 				}
 			}
 
@@ -263,17 +281,17 @@
 				margin-bottom: 1rem;
 				font-weight: 600;
 
-				.current-price,
-				.sale-price {
+				.woocommerce-Price-amount {
 					color: var(--price-color, #1e3a8a);
-					font-size: 1.125rem;
-				}
+					font-size: 18px;
 
-				.regular-price {
-					color: #9ca3af;
-					text-decoration: line-through;
-					font-size: 0.875rem;
-					margin-left: 0.5rem;
+					ins {
+						color: #9ca3af;
+						text-decoration: line-through;
+						font-size: 18px;
+
+						margin-left: 0.5rem;
+					}
 				}
 			}
 
@@ -289,7 +307,7 @@
 					border: none;
 					border-radius: 4px;
 					font-weight: 600;
-					font-size: 0.875rem;
+					font-size: 18px;
 					text-transform: uppercase;
 					cursor: pointer;
 					transition: all 0.3s ease;
@@ -310,7 +328,7 @@
 					&.btn-secondary {
 						background: transparent;
 						color: var(--primary-bg-color, #1e3a8a);
-						border: 2px solid var(--primary-bg-color, #1e3a8a);
+						border: 1px solid var(--primary-bg-color, #1e3a8a);
 
 						&:hover {
 							background: var(--primary-bg-color, #1e3a8a);

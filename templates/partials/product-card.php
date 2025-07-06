@@ -29,6 +29,14 @@ $add_to_cart_text = $product_data['add_to_cart_text'];
 
 // Generate unique IDs for hover functionality
 $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
+
+do_action(
+	"qm/info",
+	[ 
+		"card_id" => $card_id,
+		"attributes" => ! empty( $attributes ) ? $attributes : $product->get_name(),
+	]
+);
 ?>
 
 <div class="blaze-product-card" id="<?php echo esc_attr( $card_id ); ?>"
@@ -73,10 +81,12 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
 			<div class="product-swatches">
 				<?php foreach ( $attributes as $attribute ) :
 					if ( $attribute['type'] === 'color' ) : ?>
-						<span class="color-swatch" style="background-color: <?php echo esc_attr( $attribute['color'] ); ?>"
-							title="<?php echo esc_attr( $attribute['value'] ); ?>"
-							data-attribute="<?php echo esc_attr( $attribute['name'] ); ?>"
-							data-value="<?php echo esc_attr( $attribute['value'] ); ?>"></span>
+						<span class="color-swatch-border">
+							<span class="color-swatch" style="background-color: <?php echo esc_attr( $attribute['color'] ); ?>"
+								title="<?php echo esc_attr( $attribute['value'] ); ?>"
+								data-attribute="<?php echo esc_attr( $attribute['name'] ); ?>"
+								data-value="<?php echo esc_attr( $attribute['value'] ); ?>"></span>
+						</span>
 					<?php endif;
 				endforeach; ?>
 			</div>

@@ -65,11 +65,6 @@ class BlocksManager {
 		// Get products based on attributes
 		$products = $this->get_products( $attributes );
 
-		do_action( "qm/info", [ 
-			"attributes" => $attributes,
-			"products" => $products,
-		] );
-
 		if ( empty( $products ) ) {
 			return '<div class="blaze-product-slideshow-empty">' .
 				esc_html__( 'No products found.', 'blaze-gutenberg' ) .
@@ -144,13 +139,6 @@ class BlocksManager {
 		if ( empty( $args['meta_query'] ) ) {
 			unset( $args['meta_query'] );
 		}
-
-		do_action(
-			"qm/info",
-			[ 
-				"args" => $args,
-			]
-		);
 
 		$query = new \WP_Query( $args );
 

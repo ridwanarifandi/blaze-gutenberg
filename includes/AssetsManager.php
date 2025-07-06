@@ -21,7 +21,7 @@ class AssetsManager {
 		// Enqueue main block styles
 		wp_enqueue_style(
 			'blaze-gutenberg-style',
-			BLAZE_GUTENBERG_PLUGIN_URL . 'assets/css/blocks.css',
+			BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/style-blocks.css',
 			[ 'swiper-css' ],
 			BLAZE_GUTENBERG_VERSION
 		);
@@ -36,13 +36,13 @@ class AssetsManager {
 		);
 
 		// Enqueue main block scripts
-		wp_enqueue_script(
-			'blaze-gutenberg-frontend',
-			BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/frontend.js',
-			[ 'swiper-js' ],
-			BLAZE_GUTENBERG_VERSION,
-			true
-		);
+		// wp_enqueue_script(
+		// 	'blaze-gutenberg-frontend',
+		// 	BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/frontend.js',
+		// 	[ 'swiper-js' ],
+		// 	BLAZE_GUTENBERG_VERSION,
+		// 	true
+		// );
 
 		// Localize script with AJAX URL and nonce
 		wp_localize_script( 'blaze-gutenberg-frontend', 'blazeGutenberg', [ 
