@@ -47,9 +47,15 @@
 			}
 		}
 
+		.swiper-wrapper {
+			align-items: stretch;
+		}
+
 		.swiper-slide {
 			height: auto;
 			display: flex;
+			justify-content: flex-start; // Ensure slides align to start, not center
+			align-items: stretch;
 		}
 
 		// Navigation Arrows

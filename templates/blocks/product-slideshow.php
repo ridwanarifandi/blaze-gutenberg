@@ -42,8 +42,13 @@ $css_vars = sprintf(
 
 // Swiper configuration
 $swiper_config = [ 
+	'centeredSlides' => false,
+	'centeredSlidesBounds' => false,
 	'slidesPerView' => $mobile_slides,
 	'spaceBetween' => 20,
+	'slidesOffsetBefore' => 0,
+	'slidesOffsetAfter' => 0,
+	'normalizeSlideIndex' => true,
 	'navigation' => $show_arrows ? [ 
 		'nextEl' => "#{$slideshow_id} .swiper-button-next",
 		'prevEl' => "#{$slideshow_id} .swiper-button-prev",
@@ -60,10 +65,12 @@ $swiper_config = [
 		768 => [ 
 			'slidesPerView' => $tablet_slides,
 			'spaceBetween' => 25,
+			'centeredSlides' => false,
 		],
 		1024 => [ 
 			'slidesPerView' => $desktop_slides,
 			'spaceBetween' => 30,
+			'centeredSlides' => false,
 		],
 	],
 ];

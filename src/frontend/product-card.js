@@ -37,15 +37,25 @@ class BlazeProductCard {
 		const hoverImage = card.querySelector(".hover-image");
 
 		if (mainImage && hoverImage) {
-			card.addEventListener("mouseenter", () => {
-				mainImage.style.display = "none";
-				hoverImage.style.display = "block";
-			});
+			const cleanupEnter = addEventListenerWithCleanup(
+				card,
+				"mouseenter",
+				() => {
+					mainImage.style.display = "none";
+					hoverImage.style.display = "block";
+				},
+			);
 
-			card.addEventListener("mouseleave", () => {
-				mainImage.style.display = "block";
-				hoverImage.style.display = "none";
-			});
+			const cleanupLeave = addEventListenerWithCleanup(
+				card,
+				"mouseleave",
+				() => {
+					mainImage.style.display = "block";
+					hoverImage.style.display = "none";
+				},
+			);
+
+			this.cleanupFunctions.push(cleanupEnter, cleanupLeave);
 		}
 	}
 
@@ -74,7 +84,14 @@ class BlazeProductCard {
 
 	// Method to reinitialize cards (useful for dynamically loaded content)
 	reinitialize() {
+		this.cleanup();
 		this.initializeCards();
+	}
+
+	// Cleanup all event listeners
+	cleanup() {
+		this.cleanupFunctions.forEach((cleanup) => cleanup());
+		this.cleanupFunctions = [];
 	}
 }
 
