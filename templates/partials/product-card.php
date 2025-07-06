@@ -137,9 +137,8 @@ do_action(
 				<?php echo esc_html( $add_to_cart_text ?: __( 'SELECT OPTIONS', 'blaze-gutenberg' ) ); ?>
 			</a>
 
-			<a href="#" class="btn btn-secondary enquire-now button pi-custom-button add-to-enquiry add-to-enquiry-loop"
-				data-action="pi_add_to_enquiry" data-product-id="<?php echo esc_attr( $product_id ); ?>"
-				data-quantity="1">
+			<a href="#" class="btn btn-secondary add-to-enquiry" data-action="pi_add_to_enquiry"
+				data-product-id="<?php echo esc_attr( $product_id ); ?>" data-quantity="1">
 				<?php esc_html_e( 'ENQUIRE NOW', 'blaze-gutenberg' ); ?>
 			</a>
 		</div>
