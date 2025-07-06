@@ -16,17 +16,13 @@
 	// Full alignment
 	&.alignfull {
 		max-width: none;
-		width: 100vw;
-		margin-left: calc(50% - 50vw);
-		margin-right: calc(50% - 50vw);
+		width: calc(100vw - 1rem);
 	}
 
 	// Responsive adjustments for alignment
 	@media (max-width: 1280px) {
 		&.alignwide {
 			max-width: calc(100vw - 4rem);
-			margin-left: 2rem;
-			margin-right: 2rem;
 		}
 	}
 
@@ -34,15 +30,11 @@
 		// On mobile, all alignments behave more conservatively
 		&.alignwide,
 		&.alignfull {
-			margin-left: 1rem;
-			margin-right: 1rem;
-			width: calc(100vw - 2rem);
+			width: calc(100vw - 1rem);
 		}
 
 		// Default alignment on mobile
 		max-width: calc(100vw - 2rem);
-		margin-left: 1rem;
-		margin-right: 1rem;
 	}
 
 	// Slideshow Container
@@ -403,6 +395,14 @@
 					padding: 2px 6px;
 					font-size: 8px;
 				}
+			}
+
+			.product-swatches {
+				flex-wrap: wrap;
+			}
+
+			.product-reviews {
+				flex-wrap: wrap;
 			}
 		}
 	}
