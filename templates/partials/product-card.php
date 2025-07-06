@@ -7,11 +7,12 @@
  */
 
 // Prevent direct access
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 // Extract product data
+$product = wc_get_product( $product_data['id'] );
 $product_id = $product_data['id'];
 $title = $product_data['title'];
 $permalink = $product_data['permalink'];
@@ -30,166 +31,148 @@ $add_to_cart_text = $product_data['add_to_cart_text'];
 $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
 ?>
 
-<div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>" data-product-id="<?php echo esc_attr($product_id); ?>">
-    <!-- Product Image -->
-    <div class="product-image-container">
-        <img
-            src="<?php echo esc_url($image ?: wc_placeholder_img_src()); ?>"
-            alt="<?php echo esc_attr($title); ?>"
-            class="product-image main-image"
-            loading="lazy"
-        />
-        
-        <?php if ($hover_image) : ?>
-            <img
-                src="<?php echo esc_url($hover_image); ?>"
-                alt="<?php echo esc_attr($title); ?>"
-                class="product-image hover-image"
-                loading="lazy"
-                style="display: none;"
-            />
-        <?php endif; ?>
-        
-        <!-- Badges -->
-        <div class="product-badges">
-            <?php if ($on_sale) : ?>
-                <span class="badge sale-badge">
-                    <?php esc_html_e('SALE', 'blaze-gutenberg'); ?>
-                </span>
-            <?php endif; ?>
-            
-            <?php if ($is_new) : ?>
-                <span class="badge new-badge">
-                    <?php esc_html_e('NEW', 'blaze-gutenberg'); ?>
-                </span>
-            <?php endif; ?>
-        </div>
-    </div>
+<div class="blaze-product-card" id="<?php echo esc_attr( $card_id ); ?>"
+	data-product-id="<?php echo esc_attr( $product_id ); ?>">
+	<!-- Product Image -->
+	<div class="product-image-container">
+		<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $title ); ?>"
+			class="product-image main-image" loading="lazy" />
 
-    <!-- Product Info -->
-    <div class="product-info">
-        <!-- Product Title -->
-        <h3 class="product-title">
-            <a href="<?php echo esc_url($permalink); ?>">
-                <?php echo esc_html($title); ?>
-            </a>
-        </h3>
+		<?php if ( $hover_image ) : ?>
+			<img src="<?php echo esc_url( $hover_image ); ?>" alt="<?php echo esc_attr( $title ); ?>"
+				class="product-image hover-image" loading="lazy" style="display: none;" />
+		<?php endif; ?>
 
-        <!-- Color Swatches -->
-        <?php if (!empty($attributes)) : ?>
-            <div class="product-swatches">
-                <?php foreach ($attributes as $attribute) : 
-                    if ($attribute['type'] === 'color') : ?>
-                        <span
-                            class="color-swatch"
-                            style="background-color: <?php echo esc_attr($attribute['color']); ?>"
-                            title="<?php echo esc_attr($attribute['value']); ?>"
-                            data-attribute="<?php echo esc_attr($attribute['name']); ?>"
-                            data-value="<?php echo esc_attr($attribute['value']); ?>"
-                        ></span>
-                    <?php endif;
-                endforeach; ?>
-            </div>
-        <?php endif; ?>
+		<!-- Badges -->
+		<div class="product-badges">
+			<?php if ( $on_sale ) : ?>
+				<span class="badge sale-badge">
+					<?php esc_html_e( 'SALE', 'blaze-gutenberg' ); ?>
+				</span>
+			<?php endif; ?>
 
-        <!-- Reviews -->
-        <?php if ($rating > 0) : ?>
-            <div class="product-reviews">
-                <div class="stars" title="<?php echo esc_attr(sprintf(__('Rated %s out of 5', 'blaze-gutenberg'), $rating)); ?>">
-                    <?php
-                    $full_stars = floor($rating);
-                    $half_star = ($rating - $full_stars) >= 0.5;
-                    $empty_stars = 5 - $full_stars - ($half_star ? 1 : 0);
-                    
-                    // Full stars
-                    for ($i = 0; $i < $full_stars; $i++) {
-                        echo '<span class="star full">★</span>';
-                    }
-                    
-                    // Half star
-                    if ($half_star) {
-                        echo '<span class="star half">★</span>';
-                    }
-                    
-                    // Empty stars
-                    for ($i = 0; $i < $empty_stars; $i++) {
-                        echo '<span class="star empty">☆</span>';
-                    }
-                    ?>
-                </div>
-                <span class="review-count">
-                    <?php echo esc_html($rating); ?> (<?php echo esc_html($review_count); ?> <?php esc_html_e('reviews', 'blaze-gutenberg'); ?>)
-                </span>
-            </div>
-        <?php endif; ?>
+			<?php if ( $is_new ) : ?>
+				<span class="badge new-badge">
+					<?php esc_html_e( 'NEW', 'blaze-gutenberg' ); ?>
+				</span>
+			<?php endif; ?>
+		</div>
+	</div>
 
-        <!-- Price -->
-        <div class="product-price">
-            <?php echo wp_kses_post($price_html); ?>
-        </div>
+	<!-- Product Info -->
+	<div class="product-info">
+		<!-- Product Title -->
+		<h3 class="product-title">
+			<a href="<?php echo esc_url( $permalink ); ?>">
+				<?php echo esc_html( $title ); ?>
+			</a>
+		</h3>
 
-        <!-- Action Buttons -->
-        <div class="product-actions">
-            <a 
-                href="<?php echo esc_url($add_to_cart_url); ?>" 
-                class="btn btn-primary add-to-cart"
-                data-product-id="<?php echo esc_attr($product_id); ?>"
-                <?php if (wc_get_product($product_id)->is_type('external')) : ?>
-                    target="_blank" rel="noopener"
-                <?php endif; ?>
-            >
-                <?php echo esc_html($add_to_cart_text ?: __('SELECT OPTIONS', 'blaze-gutenberg')); ?>
-            </a>
-            
-            <a 
-                href="<?php echo esc_url($permalink . '#enquire'); ?>" 
-                class="btn btn-secondary enquire-now"
-                data-product-id="<?php echo esc_attr($product_id); ?>"
-            >
-                <?php esc_html_e('ENQUIRE NOW', 'blaze-gutenberg'); ?>
-            </a>
-        </div>
-    </div>
+		<!-- Color Swatches -->
+		<?php if ( ! empty( $attributes ) ) : ?>
+			<div class="product-swatches">
+				<?php foreach ( $attributes as $attribute ) :
+					if ( $attribute['type'] === 'color' ) : ?>
+						<span class="color-swatch" style="background-color: <?php echo esc_attr( $attribute['color'] ); ?>"
+							title="<?php echo esc_attr( $attribute['value'] ); ?>"
+							data-attribute="<?php echo esc_attr( $attribute['name'] ); ?>"
+							data-value="<?php echo esc_attr( $attribute['value'] ); ?>"></span>
+					<?php endif;
+				endforeach; ?>
+			</div>
+		<?php endif; ?>
+
+		<!-- Reviews -->
+		<?php if ( $rating > 0 ) : ?>
+			<div class="product-reviews">
+				<div class="stars"
+					title="<?php echo esc_attr( sprintf( __( 'Rated %s out of 5', 'blaze-gutenberg' ), $rating ) ); ?>">
+					<?php
+					$full_stars = floor( $rating );
+					$half_star = ( $rating - $full_stars ) >= 0.5;
+					$empty_stars = 5 - $full_stars - ( $half_star ? 1 : 0 );
+
+					// Full stars
+					for ( $i = 0; $i < $full_stars; $i++ ) {
+						echo '<span class="star full">★</span>';
+					}
+
+					// Half star
+					if ( $half_star ) {
+						echo '<span class="star half">★</span>';
+					}
+
+					// Empty stars
+					for ( $i = 0; $i < $empty_stars; $i++ ) {
+						echo '<span class="star empty">☆</span>';
+					}
+					?>
+				</div>
+				<span class="review-count">
+					<?php echo esc_html( $rating ); ?> (<?php echo esc_html( $review_count ); ?>
+					<?php esc_html_e( 'reviews', 'blaze-gutenberg' ); ?>)
+				</span>
+			</div>
+		<?php endif; ?>
+
+		<!-- Price -->
+		<div class="product-price">
+			<?php echo wp_kses_post( $price_html ); ?>
+		</div>
+
+		<!-- Action Buttons -->
+		<div class="product-actions">
+			<a href="<?php echo esc_url( $add_to_cart_url ); ?>" class="btn btn-primary add-to-cart"
+				data-product-id="<?php echo esc_attr( $product_id ); ?>" <?php if ( $product->is_type( 'external' ) ) : ?> target="_blank" rel="noopener" <?php endif; ?>>
+				<?php echo esc_html( $add_to_cart_text ?: __( 'SELECT OPTIONS', 'blaze-gutenberg' ) ); ?>
+			</a>
+
+			<a href="<?php echo esc_url( $permalink . '#enquire' ); ?>" class="btn btn-secondary enquire-now"
+				data-product-id="<?php echo esc_attr( $product_id ); ?>">
+				<?php esc_html_e( 'ENQUIRE NOW', 'blaze-gutenberg' ); ?>
+			</a>
+		</div>
+	</div>
 </div>
 
 <script>
-// Add hover functionality for image switching
-document.addEventListener('DOMContentLoaded', function() {
-    const card = document.getElementById('<?php echo esc_js($card_id); ?>');
-    if (!card) return;
-    
-    const mainImage = card.querySelector('.main-image');
-    const hoverImage = card.querySelector('.hover-image');
-    
-    if (mainImage && hoverImage) {
-        card.addEventListener('mouseenter', function() {
-            mainImage.style.display = 'none';
-            hoverImage.style.display = 'block';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            mainImage.style.display = 'block';
-            hoverImage.style.display = 'none';
-        });
-    }
-    
-    // Add to cart functionality (if needed)
-    const addToCartBtn = card.querySelector('.add-to-cart');
-    if (addToCartBtn && !addToCartBtn.href.includes('add-to-cart')) {
-        addToCartBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Add custom add to cart logic here if needed
-            window.location.href = this.href;
-        });
-    }
-    
-    // Enquire now functionality
-    const enquireBtn = card.querySelector('.enquire-now');
-    if (enquireBtn) {
-        enquireBtn.addEventListener('click', function(e) {
-            // Add custom enquire logic here if needed
-            // For now, just follow the link
-        });
-    }
-});
+	// Add hover functionality for image switching
+	document.addEventListener('DOMContentLoaded', function () {
+		const card = document.getElementById('<?php echo esc_js( $card_id ); ?>');
+		if (!card) return;
+
+		const mainImage = card.querySelector('.main-image');
+		const hoverImage = card.querySelector('.hover-image');
+
+		if (mainImage && hoverImage) {
+			card.addEventListener('mouseenter', function () {
+				mainImage.style.display = 'none';
+				hoverImage.style.display = 'block';
+			});
+
+			card.addEventListener('mouseleave', function () {
+				mainImage.style.display = 'block';
+				hoverImage.style.display = 'none';
+			});
+		}
+
+		// Add to cart functionality (if needed)
+		const addToCartBtn = card.querySelector('.add-to-cart');
+		if (addToCartBtn && !addToCartBtn.href.includes('add-to-cart')) {
+			addToCartBtn.addEventListener('click', function (e) {
+				e.preventDefault();
+				// Add custom add to cart logic here if needed
+				window.location.href = this.href;
+			});
+		}
+
+		// Enquire now functionality
+		const enquireBtn = card.querySelector('.enquire-now');
+		if (enquireBtn) {
+			enquireBtn.addEventListener('click', function (e) {
+				// Add custom enquire logic here if needed
+				// For now, just follow the link
+			});
+		}
+	});
 </script>

@@ -64,25 +64,20 @@ class AssetsManager {
 			BLAZE_GUTENBERG_VERSION
 		);
 
+		// Get asset file data
+		$asset_file = $this->get_asset_file( 'blocks' );
+
 		// Enqueue editor scripts
 		wp_enqueue_script(
 			'blaze-gutenberg-editor',
 			BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/blocks.js',
-			[ 
-				'wp-blocks',
-				'wp-element',
-				'wp-editor',
-				'wp-components',
-				'wp-i18n',
-				'wp-api-fetch',
-				'wp-data',
-			],
-			BLAZE_GUTENBERG_VERSION,
+			$asset_file['dependencies'],
+			$asset_file['version'],
 			true
 		);
 
 		// Localize editor script
-		wp_localize_script( 'blaze-gutenberg-blocks', 'blazeGutenbergEditor', [ 
+		wp_localize_script( 'blaze-gutenberg-editor', 'blazeGutenbergEditor', [ 
 			'restUrl' => rest_url( 'blaze/v1/' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 		] );

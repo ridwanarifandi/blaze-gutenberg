@@ -1,4 +1,46 @@
 // Editor-specific styles for Product Slideshow Block
+
+// Alignment styles for editor
+.wp-block-blaze-product-slideshow {
+	// Default width (None alignment)
+	max-width: 620px;
+	margin-left: auto;
+	margin-right: auto;
+
+	// Wide alignment
+	&.alignwide {
+		max-width: 1280px;
+	}
+
+	// Full alignment
+	&.alignfull {
+		max-width: none;
+		width: 100%;
+	}
+
+	// Responsive adjustments for editor
+	@media (max-width: 1280px) {
+		&.alignwide {
+			max-width: calc(100% - 4rem);
+			margin-left: 2rem;
+			margin-right: 2rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		&.alignwide,
+		&.alignfull {
+			margin-left: 1rem;
+			margin-right: 1rem;
+			width: calc(100% - 2rem);
+		}
+
+		max-width: calc(100% - 2rem);
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
+
 .blaze-product-slideshow-editor {
 	border: 2px dashed #e5e7eb;
 	border-radius: 8px;

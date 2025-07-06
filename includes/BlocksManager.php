@@ -15,7 +15,7 @@ class BlocksManager {
 	 * Initialize blocks
 	 */
 	public function init() {
-		add_action( 'init', [ $this, 'register_blocks' ] );
+		$this->register_blocks();
 		add_action( 'rest_api_init', [ $this, 'register_api_endpoints' ] );
 	}
 
@@ -24,122 +24,57 @@ class BlocksManager {
 	 */
 	public function register_blocks() {
 		// Register Product Slideshow block
-		$this->register_block( 'product-slideshow', [ 
+		register_block_type( 'blaze/product-slideshow', [ 
 			'render_callback' => [ $this, 'render_product_slideshow' ],
-			'attributes' => $this->get_product_slideshow_attributes(),
-		] );
-	}
-
-	/**
-	 * Register a single block
-	 */
-	private function register_block( $block_name, $args = [] ) {
-		$block_type = "blaze/{$block_name}";
-
-		$default_args = [ 
-			'editor_script' => 'blaze-gutenberg-blocks',
-			'editor_style' => 'blaze-gutenberg-editor',
 			'style' => 'blaze-gutenberg-style',
-		];
-
-		$args = wp_parse_args( $args, $default_args );
-
-		register_block_type( $block_type, $args );
-
-		$this->blocks[ $block_name ] = $args;
-	}
-
-	/**
-	 * Get Product Slideshow block attributes
-	 */
-	private function get_product_slideshow_attributes() {
-		return [ 
-			'productsPerSlideDesktop' => [ 
-				'type' => 'number',
-				'default' => 4,
-			],
-			'productsPerSlideTablet' => [ 
-				'type' => 'number',
-				'default' => 3,
-			],
-			'productsPerSlideMobile' => [ 
-				'type' => 'number',
-				'default' => 1,
-			],
-			'primaryBackgroundColor' => [ 
-				'type' => 'string',
-				'default' => '#1e3a8a',
-			],
-			'primaryFontColor' => [ 
-				'type' => 'string',
-				'default' => '#ffffff',
-			],
-			'priceColor' => [ 
-				'type' => 'string',
-				'default' => '#1e3a8a',
-			],
-			'showArrows' => [ 
-				'type' => 'boolean',
-				'default' => true,
-			],
-			'showDots' => [ 
-				'type' => 'boolean',
-				'default' => true,
-			],
-			'autoplay' => [ 
-				'type' => 'boolean',
-				'default' => false,
-			],
-			'autoplayDelay' => [ 
-				'type' => 'number',
-				'default' => 3000,
-			],
-			'productIds' => [ 
-				'type' => 'array',
-				'default' => [],
-			],
-			'productCategory' => [ 
-				'type' => 'string',
-				'default' => '',
-			],
-			'productTag' => [ 
-				'type' => 'string',
-				'default' => '',
-			],
-			'orderBy' => [ 
-				'type' => 'string',
-				'default' => 'date',
-			],
-			'order' => [ 
-				'type' => 'string',
-				'default' => 'DESC',
-			],
-			'limit' => [ 
-				'type' => 'number',
-				'default' => 12,
-			],
-			'featuredOnly' => [ 
-				'type' => 'boolean',
-				'default' => false,
-			],
-		];
+		] );
 	}
 
 	/**
 	 * Render Product Slideshow block
 	 */
 	public function render_product_slideshow( $attributes, $content ) {
+
+		// Debug: Check if WooCommerce is active
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return '<div class="blaze-product-slideshow-error">' .
+				esc_html__( 'WooCommerce is required for this block.', 'blaze-gutenberg' ) .
+				'</div>';
+		}
+
+		$attributes = wp_parse_args( $attributes, [ 
+			'productsPerSlideDesktop' => 4,
+			'productsPerSlideTablet' => 3,
+			'productsPerSlideMobile' => 1,
+			'primaryBackgroundColor' => '#1e3a8a',
+			'primaryFontColor' => '#ffffff',
+			'priceColor' => '#1e3a8a',
+			'showArrows' => true,
+			'showDots' => true,
+			'autoplay' => false,
+			'autoplayDelay' => 3000,
+			'productIds' => [],
+			'productCategory' => '',
+			'productTag' => '',
+			'orderBy' => 'date',
+			'order' => 'DESC',
+			'limit' => 12,
+			'featuredOnly' => false,
+		] );
+
 		// Get products based on attributes
 		$products = $this->get_products( $attributes );
+
+		do_action( "qm/info", [ 
+			"attributes" => $attributes,
+			"products" => $products,
+		] );
 
 		if ( empty( $products ) ) {
 			return '<div class="blaze-product-slideshow-empty">' .
 				esc_html__( 'No products found.', 'blaze-gutenberg' ) .
 				'</div>';
 		}
-
-		?>addasdasad
-		<?php
 
 		// Generate unique ID for this slideshow instance
 		$slideshow_id = 'blaze-slideshow-' . wp_generate_uuid4();
@@ -148,7 +83,14 @@ class BlocksManager {
 		ob_start();
 
 		// Include the template
-		include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/product-slideshow.php';
+		$template_path = BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/product-slideshow.php';
+		if ( file_exists( $template_path ) ) {
+			include $template_path;
+		} else {
+			echo '<div class="blaze-product-slideshow-error">' .
+				esc_html__( 'Template file not found.', 'blaze-gutenberg' ) .
+				'</div>';
+		}
 
 		return ob_get_clean();
 	}
@@ -163,13 +105,7 @@ class BlocksManager {
 			'posts_per_page' => $attributes['limit'] ?? 12,
 			'orderby' => $attributes['orderBy'] ?? 'date',
 			'order' => $attributes['order'] ?? 'DESC',
-			'meta_query' => [ 
-				[ 
-					'key' => '_visibility',
-					'value' => [ 'catalog', 'visible' ],
-					'compare' => 'IN',
-				],
-			],
+			'meta_query' => [],
 		];
 
 		// Filter by specific product IDs
@@ -204,7 +140,20 @@ class BlocksManager {
 			];
 		}
 
+		// Remove empty meta_query if not needed
+		if ( empty( $args['meta_query'] ) ) {
+			unset( $args['meta_query'] );
+		}
+
+		do_action(
+			"qm/info",
+			[ 
+				"args" => $args,
+			]
+		);
+
 		$query = new \WP_Query( $args );
+
 		return $query->posts;
 	}
 
@@ -252,6 +201,7 @@ class BlocksManager {
 				'id' => $product->ID,
 				'title' => $product->post_title,
 				'slug' => $product->post_name,
+				'image' => wp_get_attachment_image_url( get_post_thumbnail_id( $product->ID ) )
 			];
 		}
 
