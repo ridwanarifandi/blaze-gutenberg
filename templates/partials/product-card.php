@@ -137,52 +137,11 @@ do_action(
 				<?php echo esc_html( $add_to_cart_text ?: __( 'SELECT OPTIONS', 'blaze-gutenberg' ) ); ?>
 			</a>
 
-			<a href="<?php echo esc_url( $permalink . '#enquire' ); ?>" class="btn btn-secondary enquire-now"
-				data-product-id="<?php echo esc_attr( $product_id ); ?>">
+			<a href="#" class="btn btn-secondary enquire-now button pi-custom-button add-to-enquiry add-to-enquiry-loop"
+				data-action="pi_add_to_enquiry" data-product-id="<?php echo esc_attr( $product_id ); ?>"
+				data-quantity="1">
 				<?php esc_html_e( 'ENQUIRE NOW', 'blaze-gutenberg' ); ?>
 			</a>
 		</div>
 	</div>
 </div>
-
-<script>
-	// Add hover functionality for image switching
-	document.addEventListener('DOMContentLoaded', function () {
-		const card = document.getElementById('<?php echo esc_js( $card_id ); ?>');
-		if (!card) return;
-
-		const mainImage = card.querySelector('.main-image');
-		const hoverImage = card.querySelector('.hover-image');
-
-		if (mainImage && hoverImage) {
-			card.addEventListener('mouseenter', function () {
-				mainImage.style.display = 'none';
-				hoverImage.style.display = 'block';
-			});
-
-			card.addEventListener('mouseleave', function () {
-				mainImage.style.display = 'block';
-				hoverImage.style.display = 'none';
-			});
-		}
-
-		// Add to cart functionality (if needed)
-		const addToCartBtn = card.querySelector('.add-to-cart');
-		if (addToCartBtn && !addToCartBtn.href.includes('add-to-cart')) {
-			addToCartBtn.addEventListener('click', function (e) {
-				e.preventDefault();
-				// Add custom add to cart logic here if needed
-				window.location.href = this.href;
-			});
-		}
-
-		// Enquire now functionality
-		const enquireBtn = card.querySelector('.enquire-now');
-		if (enquireBtn) {
-			enquireBtn.addEventListener('click', function (e) {
-				// Add custom enquire logic here if needed
-				// For now, just follow the link
-			});
-		}
-	});
-</script>

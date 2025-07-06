@@ -6,6 +6,7 @@ module.exports = {
 	entry: {
 		blocks: "./src/blocks/index.js",
 		editor: "./src/editor.js",
+		frontend: "./src/frontend/index.js",
 	},
 	output: {
 		...defaultConfig.output,

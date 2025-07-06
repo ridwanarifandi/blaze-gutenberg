@@ -35,14 +35,17 @@ class AssetsManager {
 			true
 		);
 
+		// Get frontend asset file data
+		$frontend_asset_file = $this->get_asset_file( 'frontend' );
+
 		// Enqueue main block scripts
-		// wp_enqueue_script(
-		// 	'blaze-gutenberg-frontend',
-		// 	BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/frontend.js',
-		// 	[ 'swiper-js' ],
-		// 	BLAZE_GUTENBERG_VERSION,
-		// 	true
-		// );
+		wp_enqueue_script(
+			'blaze-gutenberg-frontend',
+			BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/frontend.js',
+			array_merge( [ 'swiper-js' ], $frontend_asset_file['dependencies'] ),
+			$frontend_asset_file['version'],
+			true
+		);
 
 		// Localize script with AJAX URL and nonce
 		wp_localize_script( 'blaze-gutenberg-frontend', 'blazeGutenberg', [ 
