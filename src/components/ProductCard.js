@@ -13,6 +13,11 @@ export default function ProductCard({
 	primaryBackgroundColor = "#1e3a8a",
 	primaryFontColor = "#ffffff",
 	priceColor = "#1e3a8a",
+	showBadges = true,
+	showRating = true,
+	showColorSwatches = true,
+	showAddToCart = true,
+	showEnquireButton = true,
 }) {
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -122,18 +127,20 @@ export default function ProductCard({
 				/>
 
 				{/* Badges */}
-				<div className="product-badges">
-					{productData.onSale && (
-						<span className="badge sale-badge">
-							{__("SALE", "blaze-gutenberg")}
-						</span>
-					)}
-					{productData.isNew && (
-						<span className="badge new-badge">
-							{__("NEW", "blaze-gutenberg")}
-						</span>
-					)}
-				</div>
+				{showBadges && (
+					<div className="product-badges">
+						{productData.onSale && (
+							<span className="badge sale-badge">
+								{__("SALE", "blaze-gutenberg")}
+							</span>
+						)}
+						{productData.isNew && (
+							<span className="badge new-badge">
+								{__("NEW", "blaze-gutenberg")}
+							</span>
+						)}
+					</div>
+				)}
 			</div>
 
 			{/* Product Info */}
@@ -148,16 +155,18 @@ export default function ProductCard({
 				</h3>
 
 				{/* Color Swatches */}
-				{renderColorSwatches(productData.attributes)}
+				{showColorSwatches && renderColorSwatches(productData.attributes)}
 
 				{/* Reviews */}
-				<div className="product-reviews">
-					<div className="stars">{renderStars(productData.rating)}</div>
-					<span className="review-count">
-						{productData.rating} ({productData.reviewCount}{" "}
-						{__("reviews", "blaze-gutenberg")})
-					</span>
-				</div>
+				{showRating && productData.rating > 0 && (
+					<div className="product-reviews">
+						<div className="stars">{renderStars(productData.rating)}</div>
+						<span className="review-count">
+							{productData.rating} ({productData.reviewCount}{" "}
+							{__("reviews", "blaze-gutenberg")})
+						</span>
+					</div>
+				)}
 
 				{/* Price */}
 				<div className="product-price">
@@ -172,19 +181,25 @@ export default function ProductCard({
 				</div>
 
 				{/* Action Buttons */}
-				<div className="product-actions">
-					<button
-						className="btn btn-primary add-to-cart"
-						onClick={isEditor ? (e) => e.preventDefault() : undefined}>
-						{__("SELECT OPTIONS", "blaze-gutenberg")}
-					</button>
+				{(showAddToCart || showEnquireButton) && (
+					<div className="product-actions">
+						{showAddToCart && (
+							<button
+								className="btn btn-primary add-to-cart"
+								onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								{__("SELECT OPTIONS", "blaze-gutenberg")}
+							</button>
+						)}
 
-					<button
-						className="btn btn-secondary enquire-now"
-						onClick={isEditor ? (e) => e.preventDefault() : undefined}>
-						{__("ENQUIRE NOW", "blaze-gutenberg")}
-					</button>
-				</div>
+						{showEnquireButton && (
+							<button
+								className="btn btn-secondary enquire-now"
+								onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								{__("ENQUIRE NOW", "blaze-gutenberg")}
+							</button>
+						)}
+					</div>
+				)}
 			</div>
 		</div>
 	);

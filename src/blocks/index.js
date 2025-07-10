@@ -8,3 +8,4 @@ import { registerBlockType } from "@wordpress/blocks";
  */
 import "./product-slideshow";
 import "./category-grid";
+import "./product-card";

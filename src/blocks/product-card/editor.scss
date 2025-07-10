@@ -1,0 +1,58 @@
+/**
+ * Product Card Block Editor Styles
+ * 
+ * Styles that are only loaded in the Gutenberg editor
+ */
+
+.blaze-product-card-block {
+	// Editor-specific styles
+	border: 1px dashed #ccc;
+	padding: 1rem;
+	border-radius: 4px;
+	
+	&:hover {
+		border-color: #007cba;
+	}
+	
+	// Selected state
+	&.is-selected {
+		border-color: #007cba;
+		box-shadow: 0 0 0 1px #007cba;
+	}
+	
+	// Placeholder styling in editor
+	.components-placeholder {
+		background: #f8f9fa;
+		border: 2px dashed #ddd;
+		
+		&:hover {
+			border-color: #007cba;
+		}
+		
+		.components-placeholder__label {
+			color: #1e1e1e;
+		}
+		
+		.components-spinner {
+			margin: 1rem 0;
+		}
+	}
+	
+	// Product card preview in editor
+	.blaze-product-card {
+		// Disable hover effects in editor
+		pointer-events: none;
+		
+		// Ensure links don't work in editor
+		a {
+			pointer-events: none;
+			cursor: default;
+		}
+		
+		// Style buttons differently in editor
+		.btn {
+			opacity: 0.8;
+			cursor: default;
+		}
+	}
+}

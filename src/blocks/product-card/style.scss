@@ -1,0 +1,44 @@
+/**
+ * Product Card Block Styles
+ * 
+ * Frontend styles for the product card block
+ * These styles are loaded on both frontend and editor
+ */
+
+.blaze-product-card-block {
+	.blaze-product-card {
+		// Inherit styles from existing product card component
+		// Additional block-specific styles can be added here
+		
+		// Ensure proper spacing when used as a block
+		margin-bottom: 1rem;
+		
+		// Block alignment support
+		&.alignwide {
+			max-width: 1200px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		
+		&.alignfull {
+			max-width: none;
+			width: 100vw;
+			margin-left: calc(50% - 50vw);
+			margin-right: calc(50% - 50vw);
+		}
+	}
+	
+	// Placeholder styles for editor
+	.components-placeholder {
+		min-height: 200px;
+		
+		.components-placeholder__label {
+			font-weight: 600;
+		}
+		
+		.components-placeholder__instructions {
+			margin-top: 1rem;
+			color: #757575;
+		}
+	}
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "blaze/product-card",
+  "version": "1.0.0",
+  "title": "WooCommerce Product Card",
+  "category": "blaze-commerce",
+  "description": "Display a single WooCommerce product card with customizable styling. Perfect for use in product loops, category pages, and related product sections.",
+  "keywords": [
+    "product",
+    "card",
+    "woocommerce",
+    "shop",
+    "commerce"
+  ],
+  "textdomain": "blaze-gutenberg",
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "productId": {
+      "type": "number",
+      "default": 0
+    },
+    "primaryBackgroundColor": {
+      "type": "string",
+      "default": "#1e3a8a"
+    },
+    "primaryFontColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "priceColor": {
+      "type": "string",
+      "default": "#1e3a8a"
+    },
+    "showBadges": {
+      "type": "boolean",
+      "default": true
+    },
+    "showRating": {
+      "type": "boolean",
+      "default": true
+    },
+    "showColorSwatches": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAddToCart": {
+      "type": "boolean",
+      "default": true
+    },
+    "showEnquireButton": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.scss",
+  "style": "file:./style.scss"
+}
