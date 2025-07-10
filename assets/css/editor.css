@@ -1,307 +1,315 @@
 /* Editor-specific styles for Product Slideshow Block */
 .blaze-product-slideshow-editor {
-    border: 2px dashed #e5e7eb;
-    border-radius: 8px;
-    padding: 2rem;
-    background: #f9fafb;
+	border: 2px dashed #e5e7eb;
+	border-radius: 8px;
+	padding: 2rem;
+	background: #f9fafb;
 }
 
 .blaze-product-slideshow-editor h3 {
-    margin: 0 0 1.5rem 0;
-    color: #1f2937;
-    font-size: 1.25rem;
-    text-align: center;
+	margin: 0 0 1.5rem 0;
+	color: #1f2937;
+	font-size: 1.25rem;
+	text-align: center;
 }
 
 /* Loading State */
 .blaze-product-slideshow-editor .blaze-loading {
-    text-align: center;
-    padding: 3rem 0;
+	text-align: center;
+	padding: 3rem 0;
 }
 
 .blaze-product-slideshow-editor .blaze-loading .components-spinner {
-    margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 .blaze-product-slideshow-editor .blaze-loading p {
-    color: #6b7280;
-    margin: 0;
+	color: #6b7280;
+	margin: 0;
 }
 
 /* Products Grid Preview */
 .blaze-product-slideshow-editor .blaze-products-grid {
-    margin-bottom: 1.5rem;
+	margin-bottom: 1.5rem;
 }
 
-.blaze-product-slideshow-editor .blaze-products-grid .blaze-product-card .product-actions .btn {
-    pointer-events: none; /* Disable clicks in editor */
+.blaze-product-slideshow-editor
+	.blaze-products-grid
+	.blaze-product-card
+	.product-actions
+	.btn {
+	pointer-events: none; /* Disable clicks in editor */
 }
 
 /* No Products State */
 .blaze-product-slideshow-editor .blaze-no-products {
-    text-align: center;
-    padding: 3rem 0;
-    color: #6b7280;
+	text-align: center;
+	padding: 3rem 0;
+	color: #6b7280;
 }
 
 .blaze-product-slideshow-editor .blaze-no-products p {
-    margin: 0;
-    font-style: italic;
+	margin: 0;
+	font-style: italic;
 }
 
 /* Slideshow Info */
 .blaze-product-slideshow-editor .blaze-slideshow-info {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-top: 1.5rem;
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 6px;
+	padding: 1rem;
+	margin-top: 1.5rem;
 }
 
 .blaze-product-slideshow-editor .blaze-slideshow-info p {
-    margin: 0;
-    font-size: 0.875rem;
-    color: #6b7280;
+	margin: 0;
+	font-size: 0.875rem;
+	color: #6b7280;
 }
 
 .blaze-product-slideshow-editor .blaze-slideshow-info p:not(:last-child) {
-    margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 /* Responsive preview adjustments */
 @media (max-width: 1024px) {
-    .blaze-product-slideshow-editor .blaze-products-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
+	.blaze-product-slideshow-editor .blaze-products-grid {
+		grid-template-columns: repeat(3, 1fr) !important;
+	}
 }
 
 @media (max-width: 768px) {
-    .blaze-product-slideshow-editor {
-        padding: 1rem;
-    }
+	.blaze-product-slideshow-editor {
+		padding: 1rem;
+	}
 
-    .blaze-product-slideshow-editor .blaze-products-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 15px;
-    }
+	.blaze-product-slideshow-editor .blaze-products-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
+		gap: 15px;
+	}
 }
 
 @media (max-width: 480px) {
-    .blaze-product-slideshow-editor .blaze-products-grid {
-        grid-template-columns: 1fr !important;
-    }
+	.blaze-product-slideshow-editor .blaze-products-grid {
+		grid-template-columns: 1fr !important;
+	}
 }
 
 /* Inspector Controls Styling */
-.block-editor-block-inspector .components-color-picker .components-color-picker__saturation {
-    margin-bottom: 1rem;
+.block-editor-block-inspector
+	.components-color-picker
+	.components-color-picker__saturation {
+	margin-bottom: 1rem;
 }
 
 .block-editor-block-inspector .components-range-control {
-    margin-bottom: 1.5rem;
+	margin-bottom: 1.5rem;
 }
 
 .block-editor-block-inspector .components-toggle-control {
-    margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 .block-editor-block-inspector .components-select-control {
-    margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 /* Include the main block styles for editor preview */
-.blaze-product-slideshow-editor .blaze-product-card {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.blaze-product-card {
+	background: #fff;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.blaze-product-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 1;
+.blaze-product-card .product-image-container {
+	position: relative;
+	overflow: hidden;
+	aspect-ratio: 1;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container .product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+.blaze-product-card .product-image-container .product-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container:hover .product-image {
-    transform: scale(1.05);
+.blaze-product-card .product-image-container:hover .product-image {
+	transform: scale(1.05);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container .product-badges {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
+.blaze-product-card .product-image-container .product-badges {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 2;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container .product-badges .badge {
-    display: block;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    color: var(--primary-font-color, #ffffff);
+.blaze-product-card .product-image-container .product-badges .badge {
+	display: block;
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-bottom: 4px;
+	color: var(--primary-font-color, #ffffff);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container .product-badges .badge.sale-badge {
-    background: var(--primary-bg-color, #1e3a8a);
+.blaze-product-card .product-image-container .product-badges .badge.sale-badge {
+	background: var(--primary-bg-color, #1e3a8a);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-image-container .product-badges .badge.new-badge {
-    background: #10b981;
+.blaze-product-card .product-image-container .product-badges .badge.new-badge {
+	background: #10b981;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info {
-    padding: 1rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+.blaze-product-card .product-info {
+	padding: 1rem;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.4;
-    color: #1f2937;
+.blaze-product-card .product-info .product-title {
+	font-size: 1rem;
+	font-weight: 600;
+	margin: 0 0 0.5rem 0;
+	line-height: 1.4;
+	color: #1f2937;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-title a {
-    color: inherit;
-    text-decoration: none;
+.blaze-product-card .product-info .product-title a {
+	color: inherit;
+	text-decoration: none;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-title a:hover {
-    color: var(--primary-bg-color, #1e3a8a);
+.blaze-product-card .product-info .product-title a:hover {
+	color: var(--primary-bg-color, #1e3a8a);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-swatches {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 0.5rem;
+.blaze-product-card .product-info .product-swatches {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 0.5rem;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-swatches .color-swatch {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #e5e7eb;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+.blaze-product-card .product-info .product-swatches .color-swatch {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 2px solid #e5e7eb;
+	cursor: pointer;
+	transition: transform 0.2s ease;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-swatches .color-swatch:hover {
-    transform: scale(1.1);
-    border-color: var(--primary-bg-color, #1e3a8a);
+.blaze-product-card .product-info .product-swatches .color-swatch:hover {
+	transform: scale(1.1);
+	border-color: var(--primary-bg-color, #1e3a8a);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+.blaze-product-card .product-info .product-reviews {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews .stars {
-    display: flex;
-    gap: 1px;
+.blaze-product-card .product-info .product-reviews .stars {
+	display: flex;
+	gap: 1px;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews .stars .star {
-    font-size: 14px;
+.blaze-product-card .product-info .product-reviews .stars .star {
+	font-size: 14px;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews .stars .star.full {
-    color: #fbbf24;
+.blaze-product-card .product-info .product-reviews .stars .star.full {
+	color: #fbbf24;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews .stars .star.half {
-    color: #fbbf24;
+.blaze-product-card .product-info .product-reviews .stars .star.half {
+	color: #fbbf24;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews .stars .star.empty {
-    color: #d1d5db;
+.blaze-product-card .product-info .product-reviews .stars .star.empty {
+	color: #d1d5db;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-reviews .review-count {
-    font-size: 0.875rem;
-    color: #6b7280;
+.blaze-product-card .product-info .product-reviews .review-count {
+	font-size: 0.875rem;
+	color: #6b7280;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-price {
-    margin-bottom: 1rem;
-    font-weight: 600;
+.blaze-product-card .product-info .product-price {
+	margin-bottom: 1rem;
+	font-weight: 600;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-price .current-price,
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-price .sale-price {
-    color: var(--price-color, #1e3a8a);
-    font-size: 1.125rem;
+.blaze-product-card .product-info .product-price .current-price,
+.blaze-product-card .product-info .product-price .sale-price {
+	color: var(--price-color, #1e3a8a);
+	font-size: 1.125rem;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-price .regular-price {
-    color: #9ca3af;
-    text-decoration: line-through;
-    font-size: 0.875rem;
-    margin-left: 0.5rem;
+.blaze-product-card .product-info .product-price .regular-price {
+	color: #9ca3af;
+	text-decoration: line-through;
+	font-size: 0.875rem;
+	margin-left: 0.5rem;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-actions {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.blaze-product-card .product-info .product-actions {
+	margin-top: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-actions .btn {
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    text-decoration: none;
-    display: block;
+.blaze-product-card .product-info .product-actions .btn {
+	padding: 0.75rem 1rem;
+	border: none;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 0.875rem;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-align: center;
+	text-decoration: none;
+	display: block;
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-actions .btn.btn-primary {
-    background: var(--primary-bg-color, #1e3a8a);
-    color: var(--primary-font-color, #ffffff);
+.blaze-product-card .product-info .product-actions .btn.btn-primary {
+	background: var(--primary-bg-color, #1e3a8a);
+	color: var(--primary-font-color, #ffffff);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-actions .btn.btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+.blaze-product-card .product-info .product-actions .btn.btn-primary:hover {
+	opacity: 0.9;
+	transform: translateY(-1px);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-actions .btn.btn-secondary {
-    background: transparent;
-    color: var(--primary-bg-color, #1e3a8a);
-    border: 2px solid var(--primary-bg-color, #1e3a8a);
+.blaze-product-card .product-info .product-actions .btn.btn-secondary {
+	background: transparent;
+	color: var(--primary-bg-color, #1e3a8a);
+	border: 2px solid var(--primary-bg-color, #1e3a8a);
 }
 
-.blaze-product-slideshow-editor .blaze-product-card .product-info .product-actions .btn.btn-secondary:hover {
-    background: var(--primary-bg-color, #1e3a8a);
-    color: var(--primary-font-color, #ffffff);
+.blaze-product-card .product-info .product-actions .btn.btn-secondary:hover {
+	background: var(--primary-bg-color, #1e3a8a);
+	color: var(--primary-font-color, #ffffff);
 }
