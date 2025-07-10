@@ -1,5 +1,6 @@
 const defaultConfig = require("@wordpress/scripts/config/webpack.config");
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
 	...defaultConfig,
@@ -10,6 +11,16 @@ module.exports = {
 	},
 	output: {
 		...defaultConfig.output,
-		path: path.resolve(__dirname, "assets/js"),
+		path: path.resolve(__dirname, "assets"),
+		filename: "js/[name].js",
+		assetModuleFilename: "js/[name][ext]",
 	},
+	plugins: [
+		...defaultConfig.plugins.filter(
+			(plugin) => !(plugin instanceof MiniCssExtractPlugin),
+		),
+		new MiniCssExtractPlugin({
+			filename: "css/[name].css",
+		}),
+	],
 };
