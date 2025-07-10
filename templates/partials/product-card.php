@@ -39,12 +39,11 @@ do_action(
 );
 ?>
 
-<div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>"
-    data-product-id="<?php echo esc_attr($product_id); ?>">
+<div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>" data-id="<?php echo esc_attr($product_id); ?>">
     <!-- Product Image -->
     <div class="product-image-container">
-        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>"
-            class="product-image main-image" loading="lazy" />
+        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="product-image main-image"
+            loading="lazy" />
 
         <?php if ($hover_image): ?>
             <img src="<?php echo esc_url($hover_image); ?>" alt="<?php echo esc_attr($title); ?>"
@@ -133,7 +132,8 @@ do_action(
         <!-- Action Buttons -->
         <div class="product-actions">
             <a href="<?php echo esc_url($add_to_cart_url); ?>" class="btn btn-primary add-to-cart"
-                data-product-id="<?php echo esc_attr($product_id); ?>" <?php if ($product->is_type('external')): ?> target="_blank" rel="noopener" <?php endif; ?>>
+                data-id="<?php echo esc_attr($product_id); ?>" <?php if ($product->is_type('external')): ?>
+                    target="_blank" rel="noopener" <?php endif; ?>>
                 <?php echo esc_html($add_to_cart_text ?: __('SELECT OPTIONS', 'blaze-gutenberg')); ?>
             </a>
 
