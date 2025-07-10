@@ -162,7 +162,6 @@ class BlocksManager
         }
 
         $attributes = wp_parse_args($attributes, [
-            'productId' => 0,
             'primaryBackgroundColor' => '#1e3a8a',
             'primaryFontColor' => '#ffffff',
             'priceColor' => '#1e3a8a',
@@ -173,22 +172,31 @@ class BlocksManager
             'showEnquireButton' => true,
         ]);
 
-        // Get the product
-        if (empty($attributes['productId']) || $attributes['productId'] <= 0) {
-            return '<div class="blaze-product-card-empty">' .
-                esc_html__('Please select a product to display.', 'blaze-gutenberg') .
-                '</div>';
+        // Get the current product from WooCommerce loop or global context
+        global $product, $post;
+
+        // Try to get product from current loop first
+        $current_product = $product;
+
+        // If no product in loop, try to get from current post
+        if (!$current_product && $post && $post->post_type === 'product') {
+            $current_product = wc_get_product($post->ID);
         }
 
-        $product = wc_get_product($attributes['productId']);
-        if (!$product || !$product->exists()) {
-            return '<div class="blaze-product-card-error">' .
-                esc_html__('Product not found.', 'blaze-gutenberg') .
+        // If still no product, try to get from query context
+        if (!$current_product && is_product()) {
+            $current_product = wc_get_product(get_the_ID());
+        }
+
+        // If no product found, show appropriate message
+        if (!$current_product || !$current_product->exists()) {
+            return '<div class="blaze-product-card-empty">' .
+                esc_html__('No product found. This block should be used within a product loop or on a product page.', 'blaze-gutenberg') .
                 '</div>';
         }
 
         // Prepare product data for template
-        $product_data = $this->format_product_data($product);
+        $product_data = $this->format_product_data($current_product);
 
         // Generate unique ID for this card instance
         $card_id = 'blaze-product-card-' . wp_generate_uuid4();

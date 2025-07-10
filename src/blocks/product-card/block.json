@@ -5,14 +5,8 @@
 	"version": "1.0.0",
 	"title": "WooCommerce Product Card",
 	"category": "blaze-commerce",
-	"description": "Display a single WooCommerce product card with customizable styling. Perfect for use in product loops, category pages, and related product sections.",
-	"keywords": [
-		"product",
-		"card", 
-		"woocommerce",
-		"shop",
-		"commerce"
-	],
+	"description": "Display the current WooCommerce product as a styled card. Automatically uses the product from the current loop context or page.",
+	"keywords": ["product", "card", "woocommerce", "shop", "commerce"],
 	"textdomain": "blaze-gutenberg",
 	"supports": {
 		"align": ["wide", "full"],
@@ -23,16 +17,12 @@
 		}
 	},
 	"attributes": {
-		"productId": {
-			"type": "number",
-			"default": 0
-		},
 		"primaryBackgroundColor": {
 			"type": "string",
 			"default": "#1e3a8a"
 		},
 		"primaryFontColor": {
-			"type": "string", 
+			"type": "string",
 			"default": "#ffffff"
 		},
 		"priceColor": {

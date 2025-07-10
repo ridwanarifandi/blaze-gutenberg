@@ -102,5 +102,21 @@
 				flex-direction: column !important;
 			}
 		}
+
+		// Editor preview notice
+		.editor-preview-notice {
+			background: #f0f6fc;
+			border: 1px solid #0073aa;
+			border-radius: 4px;
+			padding: 12px;
+			margin-bottom: 16px;
+
+			p {
+				margin: 0;
+				font-size: 14px;
+				color: #0073aa;
+				font-weight: 500;
+			}
+		}
 	}
 }
