@@ -52,6 +52,15 @@ class AssetsManager
             true
         );
 
+        // Enqueue filter blocks JavaScript
+        wp_enqueue_script(
+            'blaze-gutenberg-filter-blocks',
+            BLAZE_GUTENBERG_PLUGIN_URL . 'assets/js/filter-blocks.js',
+            [],
+            BLAZE_GUTENBERG_VERSION,
+            true
+        );
+
         // Localize script with AJAX URL and nonce
         wp_localize_script('blaze-gutenberg-frontend', 'blazeGutenberg', [
             'ajaxUrl' => admin_url('admin-ajax.php'),

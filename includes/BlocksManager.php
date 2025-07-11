@@ -43,6 +43,24 @@ class BlocksManager
             'render_callback' => [$this, 'render_product_card'],
             'style' => 'blaze-gutenberg-style',
         ]);
+
+        // Register Filter by Category block
+        register_block_type('blaze/filter-by-category', [
+            'render_callback' => [$this, 'render_filter_by_category'],
+            'style' => 'blaze-gutenberg-style',
+        ]);
+
+        // Register Filter by Attribute block
+        register_block_type('blaze/filter-by-attribute', [
+            'render_callback' => [$this, 'render_filter_by_attribute'],
+            'style' => 'blaze-gutenberg-style',
+        ]);
+
+        // Register Filter by Stock Status block
+        register_block_type('blaze/filter-by-stock-status', [
+            'render_callback' => [$this, 'render_filter_by_stock_status'],
+            'style' => 'blaze-gutenberg-style',
+        ]);
     }
 
     /**
@@ -226,6 +244,145 @@ class BlocksManager
     }
 
     /**
+     * Render Filter by Category block
+     */
+    public function render_filter_by_category($attributes, $content)
+    {
+        // Check if WooCommerce is active
+        if (!class_exists('WooCommerce')) {
+            return '<div class="blaze-filter-error">' .
+                esc_html__('WooCommerce is required for this block.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        $attributes = wp_parse_args($attributes, [
+            'title' => __('Category', 'blaze-gutenberg'),
+            'filterType' => 'category',
+            'selectedCategories' => [],
+            'showCount' => true,
+            'maxVisible' => 10,
+            'isCollapsed' => false,
+            'orderBy' => 'name',
+            'order' => 'ASC',
+            'hideEmpty' => true,
+        ]);
+
+        // Get categories or tags based on filter type
+        $items = $this->get_filter_categories($attributes);
+
+        if (empty($items)) {
+            return '<div class="blaze-filter-empty">' .
+                esc_html__('No items found.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        // Generate unique ID for this filter
+        $filter_id = 'blaze-filter-category-' . wp_rand(1000, 9999);
+
+        // Start output buffering
+        ob_start();
+
+        // Include template
+        include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/filter-by-category.php';
+
+        return ob_get_clean();
+    }
+
+    /**
+     * Render Filter by Attribute block
+     */
+    public function render_filter_by_attribute($attributes, $content)
+    {
+        // Check if WooCommerce is active
+        if (!class_exists('WooCommerce')) {
+            return '<div class="blaze-filter-error">' .
+                esc_html__('WooCommerce is required for this block.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        $attributes = wp_parse_args($attributes, [
+            'title' => __('Color', 'blaze-gutenberg'),
+            'attributeSlug' => 'pa_color',
+            'selectedAttributes' => [],
+            'showCount' => true,
+            'maxVisible' => 10,
+            'isCollapsed' => false,
+            'orderBy' => 'name',
+            'order' => 'ASC',
+            'hideEmpty' => true,
+            'displayType' => 'list',
+        ]);
+
+        // Get attribute terms
+        $items = $this->get_filter_attributes($attributes);
+
+        if (empty($items)) {
+            return '<div class="blaze-filter-empty">' .
+                esc_html__('No attribute terms found.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        // Generate unique ID for this filter
+        $filter_id = 'blaze-filter-attribute-' . wp_rand(1000, 9999);
+
+        // Start output buffering
+        ob_start();
+
+        // Include template
+        include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/filter-by-attribute.php';
+
+        return ob_get_clean();
+    }
+
+    /**
+     * Render Filter by Stock Status block
+     */
+    public function render_filter_by_stock_status($attributes, $content)
+    {
+        // Check if WooCommerce is active
+        if (!class_exists('WooCommerce')) {
+            return '<div class="blaze-filter-error">' .
+                esc_html__('WooCommerce is required for this block.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        $attributes = wp_parse_args($attributes, [
+            'title' => __('Shop', 'blaze-gutenberg'),
+            'selectedStatuses' => [],
+            'showCount' => true,
+            'maxVisible' => 10,
+            'isCollapsed' => false,
+            'enabledStatuses' => [
+                'instock' => true,
+                'onsale' => true,
+                'new' => true,
+                'outofstock' => false,
+                'backorder' => false,
+            ],
+        ]);
+
+        // Get stock status items
+        $items = $this->get_filter_stock_statuses($attributes);
+
+        if (empty($items)) {
+            return '<div class="blaze-filter-empty">' .
+                esc_html__('No stock status options enabled.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        // Generate unique ID for this filter
+        $filter_id = 'blaze-filter-stock-status-' . wp_rand(1000, 9999);
+
+        // Start output buffering
+        ob_start();
+
+        // Include template
+        include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/filter-by-stock-status.php';
+
+        return ob_get_clean();
+    }
+
+    /**
      * Get products based on attributes
      */
     private function get_products($attributes)
@@ -350,6 +507,27 @@ class BlocksManager
             'callback' => [$this, 'get_product_tags_api'],
             'permission_callback' => '__return_true',
         ]);
+
+        // Product attributes endpoint
+        register_rest_route('blaze/v1', '/product-attributes', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_product_attributes_api'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        // Product attribute terms endpoint
+        register_rest_route('blaze/v1', '/product-attribute-terms/(?P<attribute>[a-zA-Z0-9_-]+)', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_product_attribute_terms_api'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        // Product stock status counts endpoint
+        register_rest_route('blaze/v1', '/product-stock-status-counts', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_product_stock_status_counts_api'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     /**
@@ -377,7 +555,7 @@ class BlocksManager
                     'image' => wp_get_attachment_image_url($product->get_image_id(), 'woocommerce_thumbnail'),
                     'price' => $product->get_price_html(),
                     'onSale' => $product->is_on_sale(),
-                    'isNew' => blaze_is_product_new($product),
+                    'isNew' => $this->is_product_new($product),
                     'rating' => $product->get_average_rating(),
                     'reviewCount' => $product->get_review_count(),
                 ];
@@ -408,12 +586,12 @@ class BlocksManager
             'regular_price' => $product->get_regular_price(),
             'sale_price' => $product->get_sale_price(),
             'on_sale' => $product->is_on_sale(),
-            'is_new' => blaze_is_product_new($product),
+            'is_new' => $this->is_product_new($product),
             'rating' => $product->get_average_rating(),
             'review_count' => $product->get_review_count(),
             'image' => wp_get_attachment_image_url($product->get_image_id(), 'woocommerce_thumbnail'),
-            'hover_image' => blaze_get_product_hover_image($product),
-            'attributes' => blaze_get_product_color_attributes($product),
+            'hover_image' => $this->get_product_hover_image($product),
+            'attributes' => $this->get_product_color_attributes($product),
             'add_to_cart_url' => $product->add_to_cart_url(),
             'add_to_cart_text' => $product->add_to_cart_text(),
         ];
@@ -468,6 +646,251 @@ class BlocksManager
         }
 
         return rest_ensure_response($formatted_tags);
+    }
+
+    /**
+     * API endpoint to get product attributes
+     */
+    public function get_product_attributes_api($request)
+    {
+        $attributes = wc_get_attribute_taxonomies();
+
+        $formatted_attributes = [];
+        foreach ($attributes as $attribute) {
+            $formatted_attributes[] = [
+                'id' => $attribute->attribute_id,
+                'name' => $attribute->attribute_name,
+                'slug' => 'pa_' . $attribute->attribute_name,
+                'label' => $attribute->attribute_label,
+                'type' => $attribute->attribute_type,
+            ];
+        }
+
+        return rest_ensure_response($formatted_attributes);
+    }
+
+    /**
+     * API endpoint to get product attribute terms
+     */
+    public function get_product_attribute_terms_api($request)
+    {
+        $attribute_slug = $request->get_param('attribute');
+
+        if (empty($attribute_slug)) {
+            return new \WP_Error('missing_attribute', 'Attribute parameter is required', ['status' => 400]);
+        }
+
+        $terms = get_terms([
+            'taxonomy' => $attribute_slug,
+            'hide_empty' => false,
+        ]);
+
+        if (is_wp_error($terms)) {
+            return new \WP_Error('invalid_attribute', 'Invalid attribute taxonomy', ['status' => 400]);
+        }
+
+        $formatted_terms = [];
+        foreach ($terms as $term) {
+            $formatted_terms[] = [
+                'id' => $term->term_id,
+                'name' => $term->name,
+                'slug' => $term->slug,
+                'count' => $term->count,
+                'color' => $this->get_attribute_color_value($attribute_slug, $term->slug),
+            ];
+        }
+
+        return rest_ensure_response($formatted_terms);
+    }
+
+    /**
+     * API endpoint to get product stock status counts
+     */
+    public function get_product_stock_status_counts_api($request)
+    {
+        $counts = [
+            'instock' => $this->get_stock_status_count('instock'),
+            'onsale' => $this->get_stock_status_count('onsale'),
+            'new' => $this->get_stock_status_count('new'),
+            'outofstock' => $this->get_stock_status_count('outofstock'),
+            'backorder' => $this->get_stock_status_count('backorder'),
+        ];
+
+        return rest_ensure_response($counts);
+    }
+
+    /**
+     * Get filter categories/tags data
+     */
+    private function get_filter_categories($attributes)
+    {
+        $taxonomy = $attributes['filterType'] === 'category' ? 'product_cat' : 'product_tag';
+
+        $args = [
+            'taxonomy' => $taxonomy,
+            'hide_empty' => $attributes['hideEmpty'] ?? true,
+            'orderby' => $attributes['orderBy'] ?? 'name',
+            'order' => $attributes['order'] ?? 'ASC',
+            'number' => 0, // Get all for filtering
+        ];
+
+        $terms = get_terms($args);
+
+        if (is_wp_error($terms)) {
+            return [];
+        }
+
+        $formatted_items = [];
+        foreach ($terms as $term) {
+            $formatted_items[] = [
+                'id' => $term->term_id,
+                'name' => $term->name,
+                'slug' => $term->slug,
+                'count' => $term->count,
+                'link' => get_term_link($term),
+            ];
+        }
+
+        return $formatted_items;
+    }
+
+    /**
+     * Get filter attributes data
+     */
+    private function get_filter_attributes($attributes)
+    {
+        if (empty($attributes['attributeSlug'])) {
+            return [];
+        }
+
+        $taxonomy = $attributes['attributeSlug'];
+
+        $args = [
+            'taxonomy' => $taxonomy,
+            'hide_empty' => $attributes['hideEmpty'] ?? true,
+            'orderby' => $attributes['orderBy'] ?? 'name',
+            'order' => $attributes['order'] ?? 'ASC',
+            'number' => 0, // Get all for filtering
+        ];
+
+        $terms = get_terms($args);
+
+        if (is_wp_error($terms)) {
+            return [];
+        }
+
+        $formatted_items = [];
+        foreach ($terms as $term) {
+            $formatted_items[] = [
+                'id' => $term->term_id,
+                'name' => $term->name,
+                'slug' => $term->slug,
+                'count' => $term->count,
+                'color' => $this->get_attribute_color_value($taxonomy, $term->slug),
+            ];
+        }
+
+        return $formatted_items;
+    }
+
+    /**
+     * Get filter stock statuses data
+     */
+    private function get_filter_stock_statuses($attributes)
+    {
+        $enabled_statuses = $attributes['enabledStatuses'] ?? [];
+        $show_count = $attributes['showCount'] ?? true;
+
+        $available_statuses = [
+            'instock' => __('In Stock', 'blaze-gutenberg'),
+            'onsale' => __('Sale', 'blaze-gutenberg'),
+            'new' => __('New Arrivals', 'blaze-gutenberg'),
+            'outofstock' => __('Out of Stock', 'blaze-gutenberg'),
+            'backorder' => __('On Backorder', 'blaze-gutenberg'),
+        ];
+
+        $formatted_items = [];
+        foreach ($enabled_statuses as $status_key => $is_enabled) {
+            if ($is_enabled && isset($available_statuses[$status_key])) {
+                $count = $show_count ? $this->get_stock_status_count($status_key) : 0;
+
+                $formatted_items[] = [
+                    'id' => $status_key,
+                    'name' => $available_statuses[$status_key],
+                    'slug' => $status_key,
+                    'count' => $count,
+                ];
+            }
+        }
+
+        return $formatted_items;
+    }
+
+    /**
+     * Get product count for stock status
+     */
+    private function get_stock_status_count($status)
+    {
+        global $wpdb;
+
+        switch ($status) {
+            case 'instock':
+                return $wpdb->get_var("
+                    SELECT COUNT(DISTINCT p.ID)
+                    FROM {$wpdb->posts} p
+                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                    WHERE p.post_type = 'product'
+                    AND p.post_status = 'publish'
+                    AND pm.meta_key = '_stock_status'
+                    AND pm.meta_value = 'instock'
+                ");
+
+            case 'onsale':
+                return $wpdb->get_var("
+                    SELECT COUNT(DISTINCT p.ID)
+                    FROM {$wpdb->posts} p
+                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                    WHERE p.post_type = 'product'
+                    AND p.post_status = 'publish'
+                    AND pm.meta_key = '_sale_price'
+                    AND pm.meta_value != ''
+                ");
+
+            case 'new':
+                $thirty_days_ago = date('Y-m-d H:i:s', strtotime('-30 days'));
+                return $wpdb->get_var($wpdb->prepare("
+                    SELECT COUNT(DISTINCT p.ID)
+                    FROM {$wpdb->posts} p
+                    WHERE p.post_type = 'product'
+                    AND p.post_status = 'publish'
+                    AND p.post_date >= %s
+                ", $thirty_days_ago));
+
+            case 'outofstock':
+                return $wpdb->get_var("
+                    SELECT COUNT(DISTINCT p.ID)
+                    FROM {$wpdb->posts} p
+                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                    WHERE p.post_type = 'product'
+                    AND p.post_status = 'publish'
+                    AND pm.meta_key = '_stock_status'
+                    AND pm.meta_value = 'outofstock'
+                ");
+
+            case 'backorder':
+                return $wpdb->get_var("
+                    SELECT COUNT(DISTINCT p.ID)
+                    FROM {$wpdb->posts} p
+                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                    WHERE p.post_type = 'product'
+                    AND p.post_status = 'publish'
+                    AND pm.meta_key = '_stock_status'
+                    AND pm.meta_value = 'onbackorder'
+                ");
+
+            default:
+                return 0;
+        }
     }
 
     /**

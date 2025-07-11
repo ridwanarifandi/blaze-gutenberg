@@ -1,0 +1,83 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "blaze/filter-by-category",
+  "version": "1.0.0",
+  "title": "Filter by Category",
+  "category": "blaze-commerce",
+  "description": "Filter products by category or tag with collapsible interface and show more/less functionality.",
+  "keywords": [
+    "filter",
+    "category",
+    "tag",
+    "woocommerce",
+    "shop",
+    "commerce"
+  ],
+  "textdomain": "blaze-gutenberg",
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Category"
+    },
+    "filterType": {
+      "type": "string",
+      "default": "category",
+      "enum": [
+        "category",
+        "tag"
+      ]
+    },
+    "selectedCategories": {
+      "type": "array",
+      "default": []
+    },
+    "showCount": {
+      "type": "boolean",
+      "default": true
+    },
+    "maxVisible": {
+      "type": "number",
+      "default": 10
+    },
+    "isCollapsed": {
+      "type": "boolean",
+      "default": false
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "name",
+      "enum": [
+        "name",
+        "count",
+        "id"
+      ]
+    },
+    "order": {
+      "type": "string",
+      "default": "ASC",
+      "enum": [
+        "ASC",
+        "DESC"
+      ]
+    },
+    "hideEmpty": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.scss",
+  "style": "file:./style.scss"
+}

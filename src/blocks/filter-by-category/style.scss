@@ -1,0 +1,8 @@
+// Import shared filter styles
+@import "../../components/filter-shared.scss";
+
+// Specific styles for Filter by Category block on frontend
+.blaze-filter-by-category {
+	// Frontend-specific styles can go here
+	// Most styles are inherited from filter-shared.scss
+}

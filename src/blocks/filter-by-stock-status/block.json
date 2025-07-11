@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "blaze/filter-by-stock-status",
+	"version": "1.0.0",
+	"title": "Filter by Stock Status",
+	"category": "blaze-commerce",
+	"description": "Filter products by stock status including In Stock, Sale, New Arrivals with collapsible interface.",
+	"keywords": ["filter", "stock", "sale", "new arrivals", "woocommerce", "shop", "commerce"],
+	"textdomain": "blaze-gutenberg",
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Shop"
+		},
+		"selectedStatuses": {
+			"type": "array",
+			"default": []
+		},
+		"showCount": {
+			"type": "boolean",
+			"default": true
+		},
+		"maxVisible": {
+			"type": "number",
+			"default": 10
+		},
+		"isCollapsed": {
+			"type": "boolean",
+			"default": false
+		},
+		"enabledStatuses": {
+			"type": "object",
+			"default": {
+				"instock": true,
+				"onsale": true,
+				"new": true,
+				"outofstock": false,
+				"backorder": false
+			}
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

@@ -1,0 +1,58 @@
+// Import shared filter styles
+@import "../../components/filter-shared.scss";
+
+// Specific styles for Filter by Attribute block on frontend
+.blaze-filter-by-attribute {
+	// Color swatches display
+	&.display-color-swatches {
+		.blaze-filter-checkbox-list {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+			gap: 0.5rem;
+		}
+
+		.blaze-filter-checkbox-item {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			padding: 0.5rem;
+			border: 1px solid #e5e7eb;
+			border-radius: 6px;
+			transition: all 0.2s ease;
+			cursor: pointer;
+
+			&:hover {
+				border-color: #3b82f6;
+				background: #f8fafc;
+			}
+
+			&.is-selected {
+				border-color: #3b82f6;
+				background: #eff6ff;
+			}
+		}
+
+		.blaze-filter-checkbox {
+			display: none;
+		}
+
+		.blaze-filter-color-swatch {
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			border: 2px solid #e5e7eb;
+			margin-bottom: 0.25rem;
+			transition: border-color 0.2s ease;
+		}
+
+		.blaze-filter-checkbox-item.is-selected .blaze-filter-color-swatch {
+			border-color: #3b82f6;
+			box-shadow: 0 0 0 2px #eff6ff;
+		}
+
+		.blaze-filter-checkbox-label {
+			font-size: 0.75rem;
+			line-height: 1;
+		}
+	}
+}

@@ -1,0 +1,67 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "blaze/filter-by-attribute",
+	"version": "1.0.0",
+	"title": "Filter by Attribute",
+	"category": "blaze-commerce",
+	"description": "Filter products by attributes like color, size, brand with collapsible interface and show more/less functionality.",
+	"keywords": ["filter", "attribute", "color", "size", "woocommerce", "shop", "commerce"],
+	"textdomain": "blaze-gutenberg",
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Color"
+		},
+		"attributeSlug": {
+			"type": "string",
+			"default": "pa_color"
+		},
+		"selectedAttributes": {
+			"type": "array",
+			"default": []
+		},
+		"showCount": {
+			"type": "boolean",
+			"default": true
+		},
+		"maxVisible": {
+			"type": "number",
+			"default": 10
+		},
+		"isCollapsed": {
+			"type": "boolean",
+			"default": false
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "name",
+			"enum": ["name", "count", "id"]
+		},
+		"order": {
+			"type": "string",
+			"default": "ASC",
+			"enum": ["ASC", "DESC"]
+		},
+		"hideEmpty": {
+			"type": "boolean",
+			"default": true
+		},
+		"displayType": {
+			"type": "string",
+			"default": "list",
+			"enum": ["list", "color-swatches"]
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss"
+}

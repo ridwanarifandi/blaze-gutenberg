@@ -1,0 +1,8 @@
+// Import shared filter styles
+@import "../../components/filter-shared.scss";
+
+// Specific styles for Filter by Stock Status block on frontend
+.blaze-filter-by-stock-status {
+	// Frontend-specific styles can go here
+	// Most styles are inherited from filter-shared.scss
+}

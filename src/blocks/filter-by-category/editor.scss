@@ -1,0 +1,14 @@
+// Import shared filter styles
+@import "../../components/filter-shared.scss";
+
+// Specific styles for Filter by Category block in editor
+.blaze-filter-by-category {
+	&.is-editor {
+		// Editor-specific overrides can go here
+		border: 2px dashed #e5e7eb;
+		
+		.blaze-filter-header {
+			background: #f8fafc;
+		}
+	}
+}
