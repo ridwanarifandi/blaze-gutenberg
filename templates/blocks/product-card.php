@@ -32,12 +32,11 @@ $add_to_cart_text = $product_data['add_to_cart_text'];
 $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
 ?>
 
-<div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>"
-    data-id="<?php echo esc_attr($product_id); ?>">
+<div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>" data-id="<?php echo esc_attr($product_id); ?>">
     <!-- Product Image -->
     <div class="product-image-container">
-        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>"
-            class="product-image main-image" loading="lazy" />
+        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="product-image main-image"
+            loading="lazy" />
 
         <?php if ($hover_image): ?>
             <img src="<?php echo esc_url($hover_image); ?>" alt="<?php echo esc_attr($title); ?>"
@@ -67,7 +66,15 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
         <!-- Product Title -->
         <h3 class="product-title">
             <a href="<?php echo esc_url($permalink); ?>">
-                <?php echo esc_html($title); ?>
+                <?php echo wp_kses($title, array(
+                    'sup' => array(),
+                    'sub' => array(),
+                    'em' => array(),
+                    'strong' => array(),
+                    'b' => array(),
+                    'i' => array(),
+                    'span' => array('class' => array()),
+                )); ?>
             </a>
         </h3>
 
