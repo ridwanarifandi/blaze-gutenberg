@@ -29,14 +29,6 @@ $add_to_cart_text = $product_data['add_to_cart_text'];
 
 // Generate unique IDs for hover functionality
 $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
-
-do_action(
-    "qm/info",
-    [
-        "card_id" => $card_id,
-        "attributes" => !empty($attributes) ? $attributes : $product->get_name(),
-    ]
-);
 ?>
 
 <div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>" data-id="<?php echo esc_attr($product_id); ?>">
@@ -71,7 +63,15 @@ do_action(
         <!-- Product Title -->
         <h3 class="product-title">
             <a href="<?php echo esc_url($permalink); ?>">
-                <?php echo esc_html($title); ?>
+                <?php echo wp_kses($title, array(
+                    'sup' => array(),
+                    'sub' => array(),
+                    'em' => array(),
+                    'strong' => array(),
+                    'b' => array(),
+                    'i' => array(),
+                    'span' => array('class' => array()),
+                )); ?>
             </a>
         </h3>
 
