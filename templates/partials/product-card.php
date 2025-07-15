@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 // Extract product data
 $product = wc_get_product($product_data['id']);
 $product_id = $product_data['id'];
-$title = $product_data['title'];
+$title = html_entity_decode($product_data['title']);
 $permalink = $product_data['permalink'];
 $price_html = $product_data['price'];
 $on_sale = $product_data['on_sale'];
