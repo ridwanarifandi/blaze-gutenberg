@@ -62,6 +62,7 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
     <div class="product-info">
         <!-- Product Title -->
         <h3 class="product-title">
+            adsads
             <a href="<?php echo esc_url($permalink); ?>">
                 <?php echo wp_kses($title, array(
                     'sup' => array(),
