@@ -1,8 +1,5 @@
 // Filter by Stock Status block styles
 .blaze-filter-by-stock-status {
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	background: #ffffff;
 	margin-bottom: 1rem;
 	overflow: hidden;
 
@@ -16,6 +13,9 @@
 		border-bottom: 1px solid #e5e7eb;
 		cursor: pointer;
 		transition: background-color 0.2s ease;
+		font-weight: 600;
+		font-size: 18px;
+		line-height: 24px;
 
 		&:hover {
 			background: #f3f4f6;
@@ -43,14 +43,14 @@
 
 	// Filter content styles
 	.blaze-filter-content {
-		padding: 1rem;
+		padding: 0;
 	}
 
 	// Checkbox list styles
 	.blaze-filter-checkbox-list {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 12px;
 	}
 
 	.blaze-filter-checkbox-item {
@@ -60,7 +60,8 @@
 		cursor: pointer;
 		font-size: 0.875rem;
 		line-height: 1.5rem;
-		padding: 0.5rem 0;
+		padding: 0 !important;
+		margin: 0 !important;
 		position: relative;
 
 		&:hover {
@@ -119,12 +120,18 @@
 	}
 
 	.blaze-filter-checkbox-label {
-		color: #374151;
+		color: #10426e;
 		transition: color 0.2s ease;
 		flex: 1;
 		font-weight: 400;
 		line-height: 1.5;
 		cursor: pointer;
+		text-decoration: none;
+
+		&:hover {
+			color: #1f2937;
+			text-decoration: underline;
+		}
 	}
 
 	.blaze-filter-count {

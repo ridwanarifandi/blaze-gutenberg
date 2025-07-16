@@ -40,6 +40,9 @@ add_action('plugins_loaded', function () {
     \BlazeGutenberg\Plugin::get_instance();
 });
 
+// Include helper files
+require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/helpers/filter-helpers.php';
+
 // Include test file for development (only in debug mode)
 if (defined('WP_DEBUG') && WP_DEBUG) {
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-filter-blocks.php';

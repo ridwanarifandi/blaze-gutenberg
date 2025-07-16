@@ -921,66 +921,14 @@ class BlocksManager
      */
     private function get_stock_status_count($status)
     {
-        global $wpdb;
-
-        switch ($status) {
-            case 'instock':
-                return $wpdb->get_var("
-                    SELECT COUNT(DISTINCT p.ID)
-                    FROM {$wpdb->posts} p
-                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-                    WHERE p.post_type = 'product'
-                    AND p.post_status = 'publish'
-                    AND pm.meta_key = '_stock_status'
-                    AND pm.meta_value = 'instock'
-                ");
-
-            case 'onsale':
-                return $wpdb->get_var("
-                    SELECT COUNT(DISTINCT p.ID)
-                    FROM {$wpdb->posts} p
-                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-                    WHERE p.post_type = 'product'
-                    AND p.post_status = 'publish'
-                    AND pm.meta_key = '_sale_price'
-                    AND pm.meta_value != ''
-                ");
-
-            case 'new':
-                $thirty_days_ago = date('Y-m-d H:i:s', strtotime('-30 days'));
-                return $wpdb->get_var($wpdb->prepare("
-                    SELECT COUNT(DISTINCT p.ID)
-                    FROM {$wpdb->posts} p
-                    WHERE p.post_type = 'product'
-                    AND p.post_status = 'publish'
-                    AND p.post_date >= %s
-                ", $thirty_days_ago));
-
-            case 'outofstock':
-                return $wpdb->get_var("
-                    SELECT COUNT(DISTINCT p.ID)
-                    FROM {$wpdb->posts} p
-                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-                    WHERE p.post_type = 'product'
-                    AND p.post_status = 'publish'
-                    AND pm.meta_key = '_stock_status'
-                    AND pm.meta_value = 'outofstock'
-                ");
-
-            case 'backorder':
-                return $wpdb->get_var("
-                    SELECT COUNT(DISTINCT p.ID)
-                    FROM {$wpdb->posts} p
-                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-                    WHERE p.post_type = 'product'
-                    AND p.post_status = 'publish'
-                    AND pm.meta_key = '_stock_status'
-                    AND pm.meta_value = 'onbackorder'
-                ");
-
-            default:
-                return 0;
+        // Get current category context
+        $category_id = null;
+        if (is_product_category()) {
+            $category_id = get_queried_object_id();
         }
+
+        // Use helper function that considers category context
+        return blaze_get_stock_status_count_for_category($status, $category_id);
     }
 
     /**
