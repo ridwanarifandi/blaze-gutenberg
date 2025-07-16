@@ -45,11 +45,12 @@ $has_more_items = count($hidden_items) > 0;
         <div class="blaze-filter-checkbox-list">
             <?php foreach ($visible_items as $item): ?>
                 <?php
-                $is_checked = in_array($item['slug'], $current_filters);
+                $is_checked = in_array($item['id'], $current_filters);
                 ?>
                 <label class="blaze-filter-checkbox-item">
-                    <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['slug']); ?>"
-                        data-term-id="<?php echo esc_attr($item['id']); ?>" <?php checked($is_checked); ?>>
+                    <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['id']); ?>"
+                        data-term-id="<?php echo esc_attr($item['id']); ?>"
+                        data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
                     <span class="blaze-filter-checkbox-custom"></span>
                     <span class="blaze-filter-checkbox-label">
                         <?php echo esc_html($item['name']); ?>
@@ -64,11 +65,12 @@ $has_more_items = count($hidden_items) > 0;
                 <div class="blaze-filter-hidden-items" style="display: none;">
                     <?php foreach ($hidden_items as $item): ?>
                         <?php
-                        $is_checked = in_array($item['slug'], $current_filters);
+                        $is_checked = in_array($item['id'], $current_filters);
                         ?>
                         <label class="blaze-filter-checkbox-item">
-                            <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['slug']); ?>"
-                                data-term-id="<?php echo esc_attr($item['id']); ?>" <?php checked($is_checked); ?>>
+                            <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['id']); ?>"
+                                data-term-id="<?php echo esc_attr($item['id']); ?>"
+                                data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
                             <span class="blaze-filter-checkbox-custom"></span>
                             <span class="blaze-filter-checkbox-label">
                                 <?php echo esc_html($item['name']); ?>
