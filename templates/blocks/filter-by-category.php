@@ -58,23 +58,26 @@ $has_more_items = count($hidden_items) > 0;
 
             <?php if ($has_more_items): ?>
                 <div class="blaze-filter-hidden-items" style="display: none;">
-                    <?php foreach ($hidden_items as $item): ?>
-                        <?php
-                        $is_checked = in_array($item['id'], $current_filters);
-                        ?>
-                        <label class="blaze-filter-checkbox-item">
-                            <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['id']); ?>"
-                                data-term-id="<?php echo esc_attr($item['id']); ?>"
-                                data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
-                            <span class="blaze-filter-checkbox-custom"></span>
-                            <span class="blaze-filter-checkbox-label">
-                                <?php echo esc_html($item['name']); ?>
-                                <?php if ($show_count && isset($item['count'])): ?>
-                                    <span class="blaze-filter-count"> (<?php echo esc_html($item['count']); ?>)</span>
-                                <?php endif; ?>
-                            </span>
-                        </label>
-                    <?php endforeach; ?>
+                    <div class="blaze-filter-hidden-item-container">
+                        <?php foreach ($hidden_items as $item): ?>
+                            <?php
+                            $is_checked = in_array($item['id'], $current_filters);
+                            ?>
+                            <label class="blaze-filter-checkbox-item">
+                                <input type="checkbox" class="blaze-filter-checkbox"
+                                    value="<?php echo esc_attr($item['id']); ?>"
+                                    data-term-id="<?php echo esc_attr($item['id']); ?>"
+                                    data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
+                                <span class="blaze-filter-checkbox-custom"></span>
+                                <span class="blaze-filter-checkbox-label">
+                                    <?php echo esc_html($item['name']); ?>
+                                    <?php if ($show_count && isset($item['count'])): ?>
+                                        <span class="blaze-filter-count"> (<?php echo esc_html($item['count']); ?>)</span>
+                                    <?php endif; ?>
+                                </span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
                 <button type="button" class="blaze-filter-show-more">

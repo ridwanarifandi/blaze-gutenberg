@@ -29,6 +29,12 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
+
+		.blaze-filter-hidden-item-container {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
 	}
 
 	.blaze-filter-checkbox-item {
@@ -66,9 +72,9 @@
 		position: relative;
 		width: 18px;
 		height: 18px;
-		border: 2px solid #d1d5db;
+		border: none;
 		border-radius: 4px;
-		background-color: #ffffff;
+		background-color: #e0e6eb;
 		cursor: pointer;
 		transition: all 0.2s ease;
 		flex-shrink: 0;
@@ -134,7 +140,7 @@
 	.blaze-filter-show-more {
 		background: none;
 		border: none;
-		color: #3b82f6;
+		color: #10426e;
 		font-size: 0.875rem;
 		font-weight: 500;
 		cursor: pointer;
@@ -145,12 +151,6 @@
 		&:hover {
 			color: #1d4ed8;
 			text-decoration: underline;
-		}
-
-		&:focus {
-			outline: 2px solid #3b82f6;
-			outline-offset: 2px;
-			border-radius: 3px;
 		}
 	}
 
