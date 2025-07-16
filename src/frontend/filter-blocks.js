@@ -23,9 +23,18 @@
 	 * Initialize collapsible header functionality
 	 */
 	function initCollapsibleHeaders() {
+		// Only add collapse functionality to non-category filters
 		const headers = document.querySelectorAll(".blaze-filter-header");
 
 		headers.forEach((header) => {
+			const filterBlock = header.closest('[class*="blaze-filter-by-"]');
+			const filterType = getFilterType(filterBlock);
+
+			// Skip category filters - they don't have collapse functionality
+			if (filterType === "category") {
+				return;
+			}
+
 			header.addEventListener("click", handleHeaderClick);
 			header.addEventListener("keydown", handleHeaderKeydown);
 		});

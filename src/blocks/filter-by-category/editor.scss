@@ -11,12 +11,9 @@
 	.blaze-filter-header {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		padding: 1rem;
 		background: #f9fafb;
 		border-bottom: 1px solid #e5e7eb;
-		cursor: default; // Different from frontend
-		transition: background-color 0.2s ease;
 	}
 
 	.blaze-filter-title {
@@ -24,13 +21,6 @@
 		font-size: 1rem;
 		font-weight: 600;
 		color: #1f2937;
-	}
-
-	.blaze-filter-toggle-icon {
-		width: 20px;
-		height: 20px;
-		color: #6b7280;
-		transition: transform 0.2s ease;
 	}
 
 	.blaze-filter-content {

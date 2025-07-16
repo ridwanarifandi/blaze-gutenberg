@@ -7,12 +7,9 @@
 	.blaze-filter-header {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		cursor: pointer;
 		font-weight: 600;
 		font-size: 18px;
 		line-height: 24px;
-		transition: background-color 0.2s ease;
 		margin-bottom: 12px;
 	}
 
@@ -20,13 +17,6 @@
 		margin: 0;
 		font-size: 1rem;
 		font-weight: 600;
-	}
-
-	.blaze-filter-toggle-icon {
-		width: 20px;
-		height: 20px;
-		color: #6b7280;
-		transition: transform 0.2s ease;
 	}
 
 	// Filter content styles
