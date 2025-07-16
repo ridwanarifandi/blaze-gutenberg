@@ -34,14 +34,15 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
 <div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>" data-id="<?php echo esc_attr($product_id); ?>">
     <!-- Product Image -->
     <div class="product-image-container">
-        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="product-image main-image"
-            loading="lazy" />
+        <a href="<?php echo esc_url($permalink); ?>" class="product-image-link" alt="<?php echo esc_attr($title); ?>">
+            <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>"
+                class="product-image main-image" loading="lazy" />
 
-        <?php if ($hover_image): ?>
-            <img src="<?php echo esc_url($hover_image); ?>" alt="<?php echo esc_attr($title); ?>"
-                class="product-image hover-image" loading="lazy" style="display: none;" />
-        <?php endif; ?>
-
+            <?php if ($hover_image): ?>
+                <img src="<?php echo esc_url($hover_image); ?>" alt="<?php echo esc_attr($title); ?>"
+                    class="product-image hover-image" loading="lazy" style="display: none;" />
+            <?php endif; ?>
+        </a>
         <!-- Badges -->
         <div class="product-badges">
             <?php if ($on_sale): ?>
