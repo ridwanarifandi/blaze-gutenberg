@@ -13,7 +13,8 @@ if (!defined('ABSPATH')) {
 /**
  * Apply stock status filters to WooCommerce product queries
  */
-function blaze_apply_stock_status_filters($query) {
+function blaze_apply_stock_status_filters($query)
+{
     // Only apply on frontend and for product queries
     if (is_admin() || !$query->is_main_query()) {
         return;
@@ -21,7 +22,7 @@ function blaze_apply_stock_status_filters($query) {
 
     // Check if we have stock status filters
     $stock_status_filter = isset($_GET['filter_stock_status']) ? sanitize_text_field($_GET['filter_stock_status']) : '';
-    
+
     if (empty($stock_status_filter)) {
         return;
     }
@@ -32,7 +33,7 @@ function blaze_apply_stock_status_filters($query) {
 
     foreach ($stock_statuses as $status) {
         $status = trim($status);
-        
+
         switch ($status) {
             case 'instock':
                 $meta_query[] = [
@@ -41,7 +42,7 @@ function blaze_apply_stock_status_filters($query) {
                     'compare' => '='
                 ];
                 break;
-                
+
             case 'outofstock':
                 $meta_query[] = [
                     'key' => '_stock_status',
@@ -49,7 +50,7 @@ function blaze_apply_stock_status_filters($query) {
                     'compare' => '='
                 ];
                 break;
-                
+
             case 'onbackorder':
                 $meta_query[] = [
                     'key' => '_stock_status',
@@ -57,7 +58,7 @@ function blaze_apply_stock_status_filters($query) {
                     'compare' => '='
                 ];
                 break;
-                
+
             case 'onsale':
                 // Products on sale have sale price set
                 $meta_query[] = [
@@ -66,13 +67,14 @@ function blaze_apply_stock_status_filters($query) {
                     'compare' => '!='
                 ];
                 break;
-                
+
             case 'new':
-                // Products created within last 30 days
+                // Produk yang dibuat dalam 30 hari terakhir
                 $thirty_days_ago = date('Y-m-d H:i:s', strtotime('-30 days'));
                 $query->set('date_query', [
                     [
                         'after' => $thirty_days_ago,
+                        'inclusive' => true, // Menyertakan produk yang dibuat tepat 30 hari yang lalu
                         'column' => 'post_date'
                     ]
                 ]);
@@ -92,14 +94,15 @@ function blaze_apply_stock_status_filters($query) {
 /**
  * Get product count for stock status within current category context
  */
-function blaze_get_stock_status_count_for_category($status, $category_id = null) {
+function blaze_get_stock_status_count_for_category($status, $category_id = null)
+{
     global $wpdb;
-    
+
     // Get current category if not provided
     if (!$category_id && is_product_category()) {
         $category_id = get_queried_object_id();
     }
-    
+
     $base_query = "
         SELECT COUNT(DISTINCT p.ID)
         FROM {$wpdb->posts} p
@@ -107,7 +110,7 @@ function blaze_get_stock_status_count_for_category($status, $category_id = null)
         WHERE p.post_type = 'product'
         AND p.post_status = 'publish'
     ";
-    
+
     // Add category filter if we have a category
     if ($category_id) {
         $base_query .= "
@@ -120,7 +123,7 @@ function blaze_get_stock_status_count_for_category($status, $category_id = null)
             )
         ";
     }
-    
+
     switch ($status) {
         case 'instock':
             $query = $base_query . "
@@ -128,28 +131,28 @@ function blaze_get_stock_status_count_for_category($status, $category_id = null)
                 AND pm.meta_value = 'instock'
             ";
             break;
-            
+
         case 'outofstock':
             $query = $base_query . "
                 AND pm.meta_key = '_stock_status'
                 AND pm.meta_value = 'outofstock'
             ";
             break;
-            
+
         case 'onbackorder':
             $query = $base_query . "
                 AND pm.meta_key = '_stock_status'
                 AND pm.meta_value = 'onbackorder'
             ";
             break;
-            
+
         case 'onsale':
             $query = $base_query . "
                 AND pm.meta_key = '_sale_price'
                 AND pm.meta_value != ''
             ";
             break;
-            
+
         case 'new':
             $thirty_days_ago = date('Y-m-d H:i:s', strtotime('-30 days'));
             $query = str_replace(
@@ -164,18 +167,19 @@ function blaze_get_stock_status_count_for_category($status, $category_id = null)
                 $query
             );
             break;
-            
+
         default:
             return 0;
     }
-    
+
     return (int) $wpdb->get_var($query);
 }
 
 /**
  * Initialize filter hooks
  */
-function blaze_init_filter_hooks() {
+function blaze_init_filter_hooks()
+{
     // Apply stock status filters to main query
     add_action('pre_get_posts', 'blaze_apply_stock_status_filters');
 }

@@ -35,16 +35,11 @@ if ($display_type === 'color-swatches') {
 ?>
 
 <div class="<?php echo esc_attr($block_classes); ?>" data-attribute="<?php echo esc_attr($attribute_slug); ?>">
-    <div class="blaze-filter-header" data-collapsed="<?php echo $is_collapsed ? 'true' : 'false'; ?>" role="button"
-        tabindex="0" aria-expanded="<?php echo $is_collapsed ? 'false' : 'true'; ?>">
+    <div class="blaze-filter-header">
         <h3 class="blaze-filter-title"><?php echo esc_html($title); ?></h3>
-        <svg class="blaze-filter-toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <polyline points="6,9 12,15 18,9"></polyline>
-        </svg>
     </div>
 
-    <div class="blaze-filter-content" <?php echo $is_collapsed ? 'style="display: none;"' : ''; ?>>
+    <div class="blaze-filter-content">
         <div class="blaze-filter-checkbox-list">
             <?php foreach ($visible_items as $item): ?>
                 <?php

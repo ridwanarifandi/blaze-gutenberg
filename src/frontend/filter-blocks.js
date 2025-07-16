@@ -23,65 +23,11 @@
 	 * Initialize collapsible header functionality
 	 */
 	function initCollapsibleHeaders() {
-		// Only add collapse functionality to non-category filters
-		const headers = document.querySelectorAll(".blaze-filter-header");
-
-		headers.forEach((header) => {
-			const filterBlock = header.closest('[class*="blaze-filter-by-"]');
-			const filterType = getFilterType(filterBlock);
-
-			// Skip category filters - they don't have collapse functionality
-			if (filterType === "category") {
-				return;
-			}
-
-			header.addEventListener("click", handleHeaderClick);
-			header.addEventListener("keydown", handleHeaderKeydown);
-		});
+		// No collapsible functionality - all filters are always expanded
+		// This function is kept for compatibility but does nothing
 	}
 
-	/**
-	 * Handle header click events
-	 */
-	function handleHeaderClick(event) {
-		const header = event.currentTarget;
-		const content = header.nextElementSibling;
-		const icon = header.querySelector(".blaze-filter-toggle-icon");
-
-		if (!content || !content.classList.contains("blaze-filter-content")) {
-			return;
-		}
-
-		const isCollapsed = header.getAttribute("data-collapsed") === "true";
-
-		if (isCollapsed) {
-			// Expand
-			content.style.display = "block";
-			header.setAttribute("data-collapsed", "false");
-			header.setAttribute("aria-expanded", "true");
-			if (icon) {
-				icon.style.transform = "rotate(180deg)";
-			}
-		} else {
-			// Collapse
-			content.style.display = "none";
-			header.setAttribute("data-collapsed", "true");
-			header.setAttribute("aria-expanded", "false");
-			if (icon) {
-				icon.style.transform = "rotate(0deg)";
-			}
-		}
-	}
-
-	/**
-	 * Handle header keyboard events
-	 */
-	function handleHeaderKeydown(event) {
-		if (event.key === "Enter" || event.key === " ") {
-			event.preventDefault();
-			handleHeaderClick(event);
-		}
-	}
+	// Removed collapsible functionality - all filters are always expanded
 
 	/**
 	 * Initialize show more/less functionality
