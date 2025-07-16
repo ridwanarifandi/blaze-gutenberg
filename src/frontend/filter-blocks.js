@@ -145,6 +145,14 @@
 		colorSwatches.forEach((swatch) => {
 			swatch.addEventListener("click", handleColorSwatchClick);
 		});
+
+		// Handle category label clicks for navigation
+		const categoryLabels = document.querySelectorAll(
+			".blaze-filter-by-category .blaze-filter-checkbox-label",
+		);
+		categoryLabels.forEach((label) => {
+			label.addEventListener("click", handleCategoryLabelClick);
+		});
 	}
 
 	/**
@@ -201,6 +209,24 @@
 
 			// Trigger filter change
 			checkbox.dispatchEvent(new Event("change"));
+		}
+	}
+
+	/**
+	 * Handle category label clicks for navigation
+	 */
+	function handleCategoryLabelClick(event) {
+		// Prevent default label behavior
+		event.preventDefault();
+		event.stopPropagation();
+
+		const label = event.currentTarget;
+		const checkboxItem = label.closest(".blaze-filter-checkbox-item");
+		const checkbox = checkboxItem.querySelector(".blaze-filter-checkbox");
+
+		if (checkbox && checkbox.dataset.termSlug) {
+			// Navigate directly to category page
+			window.location.href = `/product-category/${checkbox.dataset.termSlug}/`;
 		}
 	}
 
