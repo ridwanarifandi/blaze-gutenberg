@@ -1,12 +1,120 @@
-// Import shared filter styles
-@import "../../components/filter-shared.scss";
-
-// Specific styles for Filter by Category block in editor
+// Editor styles for Filter by Category block
 .blaze-filter-by-category {
+	// Include all frontend styles for editor preview
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	background: #ffffff;
+	margin-bottom: 1rem;
+	overflow: hidden;
+
+	// Filter header styles
+	.blaze-filter-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem;
+		background: #f9fafb;
+		border-bottom: 1px solid #e5e7eb;
+		cursor: default; // Different from frontend
+		transition: background-color 0.2s ease;
+	}
+
+	.blaze-filter-title {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 600;
+		color: #1f2937;
+	}
+
+	.blaze-filter-toggle-icon {
+		width: 20px;
+		height: 20px;
+		color: #6b7280;
+		transition: transform 0.2s ease;
+	}
+
+	.blaze-filter-content {
+		padding: 1rem;
+	}
+
+	.blaze-filter-checkbox-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.blaze-filter-checkbox-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		font-size: 0.875rem;
+		line-height: 1.5rem;
+		padding: 0.5rem 0;
+		position: relative;
+		pointer-events: none; // Disable interaction in editor
+	}
+
+	.blaze-filter-checkbox {
+		position: absolute;
+		opacity: 0;
+		height: 0;
+		width: 0;
+		pointer-events: none;
+	}
+
+	.blaze-filter-checkbox-custom {
+		position: relative;
+		width: 18px;
+		height: 18px;
+		border: 2px solid #d1d5db;
+		border-radius: 4px;
+		background-color: #ffffff;
+		flex-shrink: 0;
+		margin-top: 1px;
+		pointer-events: none;
+
+		&::after {
+			content: "";
+			position: absolute;
+			display: none;
+			left: 5px;
+			top: 2px;
+			width: 4px;
+			height: 8px;
+			border: solid #ffffff;
+			border-width: 0 2px 2px 0;
+			transform: rotate(45deg);
+		}
+	}
+
+	.blaze-filter-checkbox-label {
+		color: #374151;
+		flex: 1;
+		font-weight: 400;
+		line-height: 1.5;
+	}
+
+	.blaze-filter-count {
+		color: #6b7280;
+		font-weight: 400;
+		margin-left: 0.25rem;
+	}
+
+	.blaze-filter-show-more {
+		background: none;
+		border: none;
+		color: #3b82f6;
+		font-size: 0.875rem;
+		font-weight: 500;
+		padding: 0.5rem 0;
+		margin-top: 0.5rem;
+		pointer-events: none;
+	}
+
+	// Editor-specific styles
 	&.is-editor {
-		// Editor-specific overrides can go here
 		border: 2px dashed #e5e7eb;
-		
+
 		.blaze-filter-header {
 			background: #f8fafc;
 		}

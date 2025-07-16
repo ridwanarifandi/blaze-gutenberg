@@ -23,7 +23,7 @@ class AssetsManager
         // Enqueue main block styles
         wp_enqueue_style(
             'blaze-gutenberg-style',
-            BLAZE_GUTENBERG_PLUGIN_URL . 'assets/css/style-blocks.css',
+            BLAZE_GUTENBERG_PLUGIN_URL . 'assets/css/style-frontend.css',
             ['swiper-css'],
             BLAZE_GUTENBERG_VERSION
         );

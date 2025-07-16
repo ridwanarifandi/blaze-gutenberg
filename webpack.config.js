@@ -8,6 +8,7 @@ module.exports = {
 		blocks: "./src/blocks/index.js",
 		editor: "./src/editor.js",
 		frontend: "./src/frontend/index.js",
+		"style-frontend": "./src/style-blocks.scss",
 	},
 	output: {
 		...defaultConfig.output,

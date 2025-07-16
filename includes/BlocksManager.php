@@ -602,10 +602,28 @@ class BlocksManager
      */
     public function get_product_categories_api($request)
     {
-        $categories = get_terms([
+        $orderby = $request->get_param('orderby') ?: 'name';
+        $order = $request->get_param('order') ?: 'ASC';
+        $hide_empty = $request->get_param('hide_empty') !== 'false';
+        $parent = $request->get_param('parent');
+
+        $args = [
             'taxonomy' => 'product_cat',
-            'hide_empty' => false,
-        ]);
+            'hide_empty' => $hide_empty,
+            'orderby' => $orderby,
+            'order' => $order,
+        ];
+
+        // If parent is specified, get only child categories
+        if ($parent !== null) {
+            $args['parent'] = intval($parent);
+        }
+
+        $categories = get_terms($args);
+
+        if (is_wp_error($categories)) {
+            return rest_ensure_response([]);
+        }
 
         $formatted_categories = [];
         foreach ($categories as $category) {
@@ -620,6 +638,7 @@ class BlocksManager
                 'count' => $category->count,
                 'image' => $image_url,
                 'link' => get_term_link($category),
+                'parent' => $category->parent,
             ];
         }
 
@@ -726,6 +745,18 @@ class BlocksManager
     {
         $taxonomy = $attributes['filterType'] === 'category' ? 'product_cat' : 'product_tag';
 
+        // For category filter, check if we're on a product category page
+        if ($taxonomy === 'product_cat' && is_product_category()) {
+            $child_categories = $this->get_child_categories_for_current_page($attributes);
+
+            // If no child categories found, show top-level categories instead
+            if (empty($child_categories)) {
+                return $this->get_top_level_categories($attributes);
+            }
+
+            return $child_categories;
+        }
+
         $args = [
             'taxonomy' => $taxonomy,
             'hide_empty' => $attributes['hideEmpty'] ?? true,
@@ -749,6 +780,65 @@ class BlocksManager
                 'count' => $term->count,
                 'link' => get_term_link($term),
             ];
+        }
+
+        return $formatted_items;
+    }
+
+    /**
+     * Get child categories for current product category page
+     */
+    private function get_child_categories_for_current_page($attributes)
+    {
+        // Use helper function to get current category
+        $current_category = blaze_get_current_product_category();
+
+        if (!$current_category) {
+            return [];
+        }
+
+        $args = [
+            'hide_empty' => $attributes['hideEmpty'] ?? true,
+            'orderby' => $attributes['orderBy'] ?? 'name',
+            'order' => $attributes['order'] ?? 'ASC',
+        ];
+
+        // Get child categories using helper function
+        $child_terms = blaze_get_child_categories($current_category->term_id, $args);
+
+        if (empty($child_terms)) {
+            return [];
+        }
+
+        $formatted_items = [];
+        foreach ($child_terms as $term) {
+            $formatted_items[] = blaze_format_category_for_filter($term);
+        }
+
+        return $formatted_items;
+    }
+
+    /**
+     * Get top-level categories (categories with no parent)
+     */
+    private function get_top_level_categories($attributes)
+    {
+        $args = [
+            'hide_empty' => $attributes['hideEmpty'] ?? true,
+            'orderby' => $attributes['orderBy'] ?? 'name',
+            'order' => $attributes['order'] ?? 'ASC',
+        ];
+
+        // Get top-level categories using helper function
+        $top_level_terms = blaze_get_top_level_categories($args);
+
+        if (empty($top_level_terms)) {
+            return [];
+        }
+
+        $formatted_items = [];
+        foreach ($top_level_terms as $term) {
+            $formatted_items[] = blaze_format_category_for_filter($term);
         }
 
         return $formatted_items;

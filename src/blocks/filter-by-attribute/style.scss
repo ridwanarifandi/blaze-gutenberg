@@ -1,8 +1,138 @@
-// Import shared filter styles
-@import "../../components/filter-shared.scss";
-
-// Specific styles for Filter by Attribute block on frontend
+// Filter by Attribute block styles
 .blaze-filter-by-attribute {
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	background: #ffffff;
+	margin-bottom: 1rem;
+	overflow: hidden;
+
+	// Filter header styles
+	.blaze-filter-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem;
+		background: #f9fafb;
+		border-bottom: 1px solid #e5e7eb;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background: #f3f4f6;
+		}
+
+		&:focus {
+			outline: 2px solid #3b82f6;
+			outline-offset: -2px;
+		}
+	}
+
+	.blaze-filter-title {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 600;
+		color: #1f2937;
+	}
+
+	.blaze-filter-toggle-icon {
+		width: 20px;
+		height: 20px;
+		color: #6b7280;
+		transition: transform 0.2s ease;
+	}
+
+	// Filter content styles
+	.blaze-filter-content {
+		padding: 1rem;
+	}
+
+	// Default checkbox list styles
+	.blaze-filter-checkbox-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.blaze-filter-checkbox-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		cursor: pointer;
+		font-size: 0.875rem;
+		line-height: 1.5rem;
+		padding: 0.5rem 0;
+		position: relative;
+
+		&:hover {
+			.blaze-filter-checkbox-label {
+				color: #1f2937;
+			}
+		}
+	}
+
+	.blaze-filter-checkbox {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+
+		&:focus + .blaze-filter-checkbox-custom {
+			outline: 2px solid #3b82f6;
+			outline-offset: 2px;
+		}
+	}
+
+	.blaze-filter-checkbox-custom {
+		position: relative;
+		width: 18px;
+		height: 18px;
+		border: 2px solid #d1d5db;
+		border-radius: 4px;
+		background-color: #ffffff;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		flex-shrink: 0;
+		margin-top: 1px;
+
+		&::after {
+			content: "";
+			position: absolute;
+			display: none;
+			left: 5px;
+			top: 2px;
+			width: 4px;
+			height: 8px;
+			border: solid #ffffff;
+			border-width: 0 2px 2px 0;
+			transform: rotate(45deg);
+		}
+	}
+
+	.blaze-filter-checkbox:checked + .blaze-filter-checkbox-custom {
+		background-color: #3b82f6;
+		border-color: #3b82f6;
+
+		&::after {
+			display: block;
+		}
+	}
+
+	.blaze-filter-checkbox-label {
+		color: #374151;
+		transition: color 0.2s ease;
+		flex: 1;
+		font-weight: 400;
+		line-height: 1.5;
+		cursor: pointer;
+	}
+
+	.blaze-filter-count {
+		color: #6b7280;
+		font-weight: 400;
+		margin-left: 0.25rem;
+	}
+
 	// Color swatches display
 	&.display-color-swatches {
 		.blaze-filter-checkbox-list {

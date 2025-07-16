@@ -31,30 +31,26 @@ $hidden_items = array_slice($items, $max_visible);
 $has_more_items = count($hidden_items) > 0;
 ?>
 
-<div class="blaze-filter-by-category" data-filter-type="<?php echo esc_attr($filter_type); ?>">
-    <div class="blaze-filter-header" 
-         data-collapsed="<?php echo $is_collapsed ? 'true' : 'false'; ?>"
-         role="button" 
-         tabindex="0"
-         aria-expanded="<?php echo $is_collapsed ? 'false' : 'true'; ?>">
+<div class="blaze-filter-by-category blaze-filter-block" data-filter-type="<?php echo esc_attr($filter_type); ?>">
+    <div class="blaze-filter-header" data-collapsed="<?php echo $is_collapsed ? 'true' : 'false'; ?>" role="button"
+        tabindex="0" aria-expanded="<?php echo $is_collapsed ? 'false' : 'true'; ?>">
         <h3 class="blaze-filter-title"><?php echo esc_html($title); ?></h3>
-        <svg class="blaze-filter-toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="blaze-filter-toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
             <polyline points="6,9 12,15 18,9"></polyline>
         </svg>
     </div>
-    
+
     <div class="blaze-filter-content" <?php echo $is_collapsed ? 'style="display: none;"' : ''; ?>>
         <div class="blaze-filter-checkbox-list">
             <?php foreach ($visible_items as $item): ?>
-                <?php 
+                <?php
                 $is_checked = in_array($item['slug'], $current_filters);
                 ?>
                 <label class="blaze-filter-checkbox-item">
-                    <input type="checkbox" 
-                           class="blaze-filter-checkbox" 
-                           value="<?php echo esc_attr($item['slug']); ?>"
-                           data-term-id="<?php echo esc_attr($item['id']); ?>"
-                           <?php checked($is_checked); ?>>
+                    <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['slug']); ?>"
+                        data-term-id="<?php echo esc_attr($item['id']); ?>" <?php checked($is_checked); ?>>
+                    <span class="blaze-filter-checkbox-custom"></span>
                     <span class="blaze-filter-checkbox-label">
                         <?php echo esc_html($item['name']); ?>
                         <?php if ($show_count && isset($item['count'])): ?>
@@ -63,19 +59,17 @@ $has_more_items = count($hidden_items) > 0;
                     </span>
                 </label>
             <?php endforeach; ?>
-            
+
             <?php if ($has_more_items): ?>
                 <div class="blaze-filter-hidden-items" style="display: none;">
                     <?php foreach ($hidden_items as $item): ?>
-                        <?php 
+                        <?php
                         $is_checked = in_array($item['slug'], $current_filters);
                         ?>
                         <label class="blaze-filter-checkbox-item">
-                            <input type="checkbox" 
-                                   class="blaze-filter-checkbox" 
-                                   value="<?php echo esc_attr($item['slug']); ?>"
-                                   data-term-id="<?php echo esc_attr($item['id']); ?>"
-                                   <?php checked($is_checked); ?>>
+                            <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['slug']); ?>"
+                                data-term-id="<?php echo esc_attr($item['id']); ?>" <?php checked($is_checked); ?>>
+                            <span class="blaze-filter-checkbox-custom"></span>
                             <span class="blaze-filter-checkbox-label">
                                 <?php echo esc_html($item['name']); ?>
                                 <?php if ($show_count && isset($item['count'])): ?>
@@ -85,7 +79,7 @@ $has_more_items = count($hidden_items) > 0;
                         </label>
                     <?php endforeach; ?>
                 </div>
-                
+
                 <button type="button" class="blaze-filter-show-more">
                     <span class="show-more-text">
                         <?php echo esc_html__('Show More', 'blaze-gutenberg'); ?>

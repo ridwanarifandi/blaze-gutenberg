@@ -6,8 +6,8 @@
  */
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 // Load product helper functions
@@ -15,3 +15,6 @@ require_once __DIR__ . '/product-helpers.php';
 
 // Load attribute helper functions
 require_once __DIR__ . '/attribute-helpers.php';
+
+// Load category helper functions
+require_once __DIR__ . '/category-helpers.php';

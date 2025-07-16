@@ -1,0 +1,12 @@
+/**
+ * Frontend styles for all Blaze Gutenberg blocks
+ * This file imports all block styles for the frontend
+ */
+
+// Import block styles
+@import "./blocks/product-slideshow/style.scss";
+@import "./blocks/category-grid/style.scss";
+@import "./blocks/product-card/style.scss";
+@import "./blocks/filter-by-category/style.scss";
+@import "./blocks/filter-by-attribute/style.scss";
+@import "./blocks/filter-by-stock-status/style.scss";
