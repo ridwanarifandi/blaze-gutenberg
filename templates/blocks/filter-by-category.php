@@ -48,8 +48,8 @@ $has_more_items = count($hidden_items) > 0;
                 $is_checked = in_array($item['id'], $current_filters);
                 ?>
                 <label class="blaze-filter-checkbox-item">
-                    <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['id']); ?>"
-                        data-term-id="<?php echo esc_attr($item['id']); ?>"
+                    <input type="checkbox" class="wc-block-product-filter-checkbox-list__input"
+                        value="<?php echo esc_attr($item['id']); ?>" data-term-id="<?php echo esc_attr($item['id']); ?>"
                         data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
                     <span class="blaze-filter-checkbox-custom"></span>
                     <span class="blaze-filter-checkbox-label">
@@ -68,8 +68,8 @@ $has_more_items = count($hidden_items) > 0;
                         $is_checked = in_array($item['id'], $current_filters);
                         ?>
                         <label class="blaze-filter-checkbox-item">
-                            <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['id']); ?>"
-                                data-term-id="<?php echo esc_attr($item['id']); ?>"
+                            <input type="checkbox" class="wc-block-product-filter-checkbox-list__input"
+                                value="<?php echo esc_attr($item['id']); ?>" data-term-id="<?php echo esc_attr($item['id']); ?>"
                                 data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
                             <span class="blaze-filter-checkbox-custom"></span>
                             <span class="blaze-filter-checkbox-label">
