@@ -63,8 +63,9 @@ function blaze_apply_stock_status_filters($query)
                 // Products on sale have sale price set
                 $meta_query[] = [
                     'key' => '_sale_price',
-                    'value' => '',
-                    'compare' => '!='
+                    'value' => 0,
+                    'compare' => '>',
+                    'type' => 'NUMERIC'
                 ];
                 break;
 
@@ -86,6 +87,17 @@ function blaze_apply_stock_status_filters($query)
     if (count($stock_statuses) > 1) {
         $meta_query['relation'] = 'OR';
     }
+
+    do_action(
+        "qm/info",
+        [
+            "filter_product_" . uniqid(),
+            [
+                "meta_query" => $meta_query,
+                "tax_query" => $tax_query
+            ]
+        ]
+    );
 
     $query->set('meta_query', $meta_query);
     $query->set('tax_query', $tax_query);
