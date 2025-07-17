@@ -100,7 +100,7 @@ function blaze_apply_stock_status_filters($query)
     );
 
     $query->set('meta_query', $meta_query);
-    $query->set('tax_query', $tax_query);
+    // $query->set('tax_query', $tax_query);
 }
 
 /**
