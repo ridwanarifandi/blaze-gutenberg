@@ -751,12 +751,18 @@ class BlocksManager
 
             // If no child categories found, show top-level categories instead
             if (empty($child_categories)) {
-                return $this->get_top_level_categories($attributes);
+                return $this->get_top_level_categories_with_children($attributes);
             }
 
             return $child_categories;
         }
 
+        // For category filter, get top-level categories with their children
+        if ($taxonomy === 'product_cat') {
+            return $this->get_top_level_categories_with_children($attributes);
+        }
+
+        // For tags, use the original logic
         $args = [
             'taxonomy' => $taxonomy,
             'hide_empty' => $attributes['hideEmpty'] ?? true,
@@ -839,6 +845,50 @@ class BlocksManager
         $formatted_items = [];
         foreach ($top_level_terms as $term) {
             $formatted_items[] = blaze_format_category_for_filter($term);
+        }
+
+        return $formatted_items;
+    }
+
+    /**
+     * Get top-level categories with their children (1 level deep)
+     */
+    private function get_top_level_categories_with_children($attributes)
+    {
+        $args = [
+            'hide_empty' => $attributes['hideEmpty'] ?? true,
+            'orderby' => $attributes['orderBy'] ?? 'name',
+            'order' => $attributes['order'] ?? 'ASC',
+        ];
+
+        // Get top-level categories using helper function
+        $top_level_terms = blaze_get_top_level_categories($args);
+
+        if (empty($top_level_terms)) {
+            return [];
+        }
+
+        $formatted_items = [];
+        foreach ($top_level_terms as $term) {
+            // Add parent category
+            $parent_item = blaze_format_category_for_filter($term);
+            $parent_item['level'] = 0; // Mark as parent level
+            $formatted_items[] = $parent_item;
+
+            // Get child categories
+            $child_args = [
+                'hide_empty' => $attributes['hideEmpty'] ?? true,
+                'orderby' => $attributes['orderBy'] ?? 'name',
+                'order' => $attributes['order'] ?? 'ASC',
+            ];
+
+            $child_terms = blaze_get_child_categories($term->term_id, $child_args);
+
+            foreach ($child_terms as $child_term) {
+                $child_item = blaze_format_category_for_filter($child_term);
+                $child_item['level'] = 1; // Mark as child level
+                $formatted_items[] = $child_item;
+            }
         }
 
         return $formatted_items;

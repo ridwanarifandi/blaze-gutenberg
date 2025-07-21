@@ -44,6 +44,11 @@
 		padding: 0 !important;
 		margin: 0 !important;
 		position: relative;
+
+		// Indentation for child categories
+		&.blaze-filter-checkbox-item-level-1 {
+			padding-left: 1.5rem !important;
+		}
 	}
 
 	.blaze-filter-checkbox {

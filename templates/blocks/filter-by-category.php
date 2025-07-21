@@ -41,8 +41,13 @@ $has_more_items = count($hidden_items) > 0;
             <?php foreach ($visible_items as $item): ?>
                 <?php
                 $is_checked = in_array($item['slug'], $current_filters);
+                $item_level = isset($item['level']) ? $item['level'] : 0;
+                $item_classes = 'blaze-filter-checkbox-item';
+                if ($item_level > 0) {
+                    $item_classes .= ' blaze-filter-checkbox-item-level-' . $item_level;
+                }
                 ?>
-                <label class="blaze-filter-checkbox-item">
+                <label class="<?php echo esc_attr($item_classes); ?>">
                     <input type="checkbox" class="blaze-filter-checkbox" value="<?php echo esc_attr($item['id']); ?>"
                         data-term-id="<?php echo esc_attr($item['id']); ?>"
                         data-term-slug="<?php echo esc_attr($item['slug']); ?>" <?php checked($is_checked); ?>>
@@ -62,8 +67,13 @@ $has_more_items = count($hidden_items) > 0;
                         <?php foreach ($hidden_items as $item): ?>
                             <?php
                             $is_checked = in_array($item['id'], $current_filters);
+                            $item_level = isset($item['level']) ? $item['level'] : 0;
+                            $item_classes = 'blaze-filter-checkbox-item';
+                            if ($item_level > 0) {
+                                $item_classes .= ' blaze-filter-checkbox-item-level-' . $item_level;
+                            }
                             ?>
-                            <label class="blaze-filter-checkbox-item">
+                            <label class="<?php echo esc_attr($item_classes); ?>">
                                 <input type="checkbox" class="blaze-filter-checkbox"
                                     value="<?php echo esc_attr($item['id']); ?>"
                                     data-term-id="<?php echo esc_attr($item['id']); ?>"
