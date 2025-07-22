@@ -306,7 +306,9 @@
 					display: block;
 
 					&.btn-primary {
-						background: var(--primary-bg-color, #1e3a8a);
+						background: var(--wp--preset--color--safelife-primary, #1e3a8a);
+						border: 1px solid
+							var(--wp--preset--color--safelife-primary, #1e3a8a);
 						color: var(--primary-font-color, #ffffff);
 
 						&:hover {
@@ -317,11 +319,12 @@
 
 					&.btn-secondary {
 						background: transparent;
-						color: var(--primary-bg-color, #1e3a8a);
-						border: 1px solid var(--primary-bg-color, #1e3a8a);
+						color: var(--wp--preset--color--safelife-primary, #1e3a8a);
+						border: 1px solid
+							var(--wp--preset--color--safelife-primary, #1e3a8a);
 
 						&:hover {
-							background: var(--primary-bg-color, #1e3a8a);
+							background: var(--wp--preset--color--safelife-primary, #1e3a8a);
 							color: var(--primary-font-color, #ffffff);
 						}
 					}
