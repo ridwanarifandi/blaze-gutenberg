@@ -81,7 +81,7 @@
 					color: var(--primary-font-color, #ffffff);
 
 					&.sale-badge {
-						background: var(--primary-bg-color, #1e3a8a);
+						background: var(--wp--preset--color--safelife-primary, #1e3a8a);
 					}
 
 					&.new-badge {
@@ -110,7 +110,7 @@
 					text-decoration: none;
 
 					&:hover {
-						color: var(--primary-bg-color, #1e3a8a);
+						color: var(--wp--preset--color--safelife-primary, #1e3a8a);
 					}
 				}
 			}
@@ -126,7 +126,7 @@
 					width: 32px;
 					height: 32px;
 					border-radius: 50%;
-					border: 1px solid var(--primary-bg-color, #1e3a8a);
+					border: 1px solid var(--wp--preset--color--safelife-primary, #1e3a8a);
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -136,7 +136,7 @@
 
 					&:hover {
 						transform: scale(1.1);
-						border-color: var(--primary-bg-color, #1e3a8a);
+						border-color: var(--wp--preset--color--safelife-primary, #1e3a8a);
 					}
 
 					.color-swatch {
@@ -224,7 +224,7 @@
 					display: block;
 
 					&.btn-primary {
-						background: var(--primary-bg-color, #1e3a8a);
+						background: var(--wp--preset--color--safelife-primary, #1e3a8a);
 						color: var(--primary-font-color, #ffffff);
 
 						&:hover {
@@ -235,11 +235,12 @@
 
 					&.btn-secondary {
 						background: transparent;
-						color: var(--primary-bg-color, #1e3a8a);
-						border: 1px solid var(--primary-bg-color, #1e3a8a);
+						color: var(--wp--preset--color--safelife-primary, #1e3a8a);
+						border: 1px solid
+							var(--wp--preset--color--safelife-primary, #1e3a8a);
 
 						&:hover {
-							background: var(--primary-bg-color, #1e3a8a);
+							background: var(--wp--preset--color--safelife-primary, #1e3a8a);
 							color: var(--primary-font-color, #ffffff);
 						}
 					}
@@ -329,14 +330,21 @@
 					display: block !important;
 
 					&.btn-primary {
-						background: var(--primary-bg-color, #1e3a8a) !important;
+						background: var(
+							--wp--preset--color--safelife-primary,
+							#1e3a8a
+						) !important;
 						color: var(--primary-font-color, #ffffff) !important;
 					}
 
 					&.btn-secondary {
 						background: transparent !important;
-						color: var(--primary-bg-color, #1e3a8a) !important;
-						border: 1px solid var(--primary-bg-color, #1e3a8a) !important;
+						color: var(
+							--wp--preset--color--safelife-primary,
+							#1e3a8a
+						) !important;
+						border: 1px solid
+							var(--wp--preset--color--safelife-primary, #1e3a8a) !important;
 					}
 				}
 			}

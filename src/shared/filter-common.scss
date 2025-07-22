@@ -97,7 +97,7 @@
 	}
 
 	.blaze-filter-checkbox-label {
-		color: #10426e;
+		color: var(--wp--preset--color--safelife-primary, #10426e);
 		flex: 1;
 		font-weight: 400;
 		line-height: 1.5;
