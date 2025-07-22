@@ -225,6 +225,8 @@
 
 					&.btn-primary {
 						background: var(--wp--preset--color--safelife-primary, #1e3a8a);
+						border: 1px solid
+							var(--wp--preset--color--safelife-primary, #1e3a8a);
 						color: var(--primary-font-color, #ffffff);
 
 						&:hover {
@@ -335,6 +337,8 @@
 							#1e3a8a
 						) !important;
 						color: var(--primary-font-color, #ffffff) !important;
+						border: 1px solid
+							var(--wp--preset--color--safelife-primary, #1e3a8a) !important;
 					}
 
 					&.btn-secondary {
