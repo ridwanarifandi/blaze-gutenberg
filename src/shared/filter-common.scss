@@ -28,8 +28,7 @@
 	}
 
 	// Checkbox list styles
-	.blaze-filter-checkbox-list,
-	.blaze-filter-hidden-item-container {
+	.blaze-filter-checkbox-list {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
@@ -136,4 +135,16 @@
 		color: #6b7280;
 		font-weight: normal;
 	}
+
+	.blaze-filter-hidden-item-container {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+}
+
+.blaze-filter-hidden-item-container {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
