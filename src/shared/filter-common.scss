@@ -28,7 +28,8 @@
 	}
 
 	// Checkbox list styles
-	.blaze-filter-checkbox-list {
+	.blaze-filter-checkbox-list,
+	.blaze-filter-hidden-item-container {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
