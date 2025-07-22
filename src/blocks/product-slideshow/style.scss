@@ -64,7 +64,7 @@
 			width: 32px;
 			height: 32px;
 			margin-top: -20px;
-			background: var(--primary-bg-color, #1e3a8a);
+			background: var(--wp--preset--color--safelife-primary, #1e3a8a);
 			border-radius: 50%;
 			color: var(--primary-font-color, #ffffff);
 
@@ -103,7 +103,7 @@
 				margin: 0 4px;
 
 				&.swiper-pagination-bullet-active {
-					background: var(--primary-bg-color, #1e3a8a);
+					background: var(--wp--preset--color--safelife-primary, #1e3a8a);
 				}
 			}
 		}
