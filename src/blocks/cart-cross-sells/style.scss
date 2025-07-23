@@ -3,6 +3,9 @@
  * Frontend and editor styles for the cart cross-sells block
  */
 
+// Import shared product card styles
+@import "../../shared/product-card.scss";
+
 .blaze-cart-cross-sells-block {
 	// CSS Custom Properties
 	--primary-bg-color: #1e3a8a;
@@ -47,11 +50,7 @@
 		flex-direction: column;
 		height: 100%;
 
-		// Ensure product card inherits all existing styles
-		.blaze-product-card {
-			// Remove any overrides that might interfere with existing product card styles
-			// Let the existing product-card styles handle the layout
-		}
+		// Product cards will inherit styles from shared/product-card.scss
 	}
 
 	// Error and empty states
