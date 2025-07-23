@@ -47,21 +47,10 @@
 		flex-direction: column;
 		height: 100%;
 
+		// Ensure product card inherits all existing styles
 		.blaze-product-card {
-			height: 100%;
-			display: flex;
-			flex-direction: column;
-
-			.product-info {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-			}
-
-			.product-actions {
-				margin-top: auto;
-			}
+			// Remove any overrides that might interfere with existing product card styles
+			// Let the existing product-card styles handle the layout
 		}
 	}
 
@@ -109,35 +98,8 @@
 		}
 	}
 
-	// Integration with existing product card styles
-	.blaze-product-card {
-		// Ensure consistent styling with other product cards
-		.btn {
-			background-color: var(--primary-bg-color);
-			color: var(--primary-font-color);
-			border-color: var(--primary-bg-color);
-
-			&:hover {
-				background-color: color-mix(in srgb, var(--primary-bg-color) 85%, black);
-				border-color: color-mix(in srgb, var(--primary-bg-color) 85%, black);
-			}
-
-			&.btn-secondary {
-				background-color: transparent;
-				color: var(--primary-bg-color);
-				border-color: var(--primary-bg-color);
-
-				&:hover {
-					background-color: var(--primary-bg-color);
-					color: var(--primary-font-color);
-				}
-			}
-		}
-
-		.product-price {
-			color: var(--price-color);
-		}
-	}
+	// Let product cards use their existing styles
+	// Custom properties will be inherited by product cards
 
 	// Alignment support
 	&.alignwide {

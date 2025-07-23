@@ -25,26 +25,71 @@ if (!current_user_can('manage_options')) {
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cart Cross-Sells Block Test</title>
     <?php wp_head(); ?>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .test-section { margin: 30px 0; padding: 20px; border: 1px solid #ddd; }
-        .test-title { color: #333; border-bottom: 2px solid #0073aa; padding-bottom: 10px; }
-        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
-        .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .status.warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
-        .code { background: #f8f9fa; padding: 15px; border-left: 4px solid #0073aa; margin: 10px 0; }
-        pre { margin: 0; overflow-x: auto; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #0073aa;
+            padding-bottom: 10px;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #0073aa;
+            margin: 10px 0;
+        }
+
+        pre {
+            margin: 0;
+            overflow-x: auto;
+        }
     </style>
 </head>
+
 <body>
     <h1>🛒 Cart Cross-Sells Block Test</h1>
-    
+
     <?php
     /**
      * Test 1: Check if WooCommerce is active
@@ -94,10 +139,10 @@ if (!current_user_can('manage_options')) {
         <?php
         $helper_functions = [
             'blaze_is_product_new',
-            'blaze_get_product_hover_image', 
+            'blaze_get_product_hover_image',
             'blaze_get_product_color_attributes'
         ];
-        
+
         $all_exist = true;
         foreach ($helper_functions as $function) {
             if (function_exists($function)) {
@@ -107,7 +152,7 @@ if (!current_user_can('manage_options')) {
                 $all_exist = false;
             }
         }
-        
+
         if ($all_exist) {
             echo "<div class='status success'>✅ All helper functions are available</div>";
         }
@@ -129,7 +174,7 @@ if (!current_user_can('manage_options')) {
                 $cart_items = $cart->get_cart();
                 echo "<div class='status success'>✅ WooCommerce cart is available</div>";
                 echo "<p><strong>Cart items count:</strong> " . count($cart_items) . "</p>";
-                
+
                 if (empty($cart_items)) {
                     echo "<div class='status warning'>⚠️ Cart is empty. Add some products to test cross-sells.</div>";
                 } else {
@@ -161,15 +206,15 @@ if (!current_user_can('manage_options')) {
         <h2 class="test-title">Test 5: Block Rendering</h2>
         <?php if ($is_registered && class_exists('WooCommerce')): ?>
             <div class="status success">✅ Attempting to render block...</div>
-            
+
             <div class="code">
                 <h4>Block Code:</h4>
                 <pre>&lt;!-- wp:blaze/cart-cross-sells {
-    "columnsDesktop": 3,
-    "limit": 3,
-    "showTitle": true,
-    "title": "Test Cross-Sells"
-} /--&gt;</pre>
+        "columnsDesktop": 3,
+        "limit": 3,
+        "showTitle": true,
+        "title": "Test Cross-Sells"
+    } /--&gt;</pre>
             </div>
 
             <h4>Rendered Output:</h4>
@@ -178,8 +223,16 @@ if (!current_user_can('manage_options')) {
                 echo do_blocks('<!-- wp:blaze/cart-cross-sells {
                     "columnsDesktop": 3,
                     "limit": 3,
-                    "showTitle": true,
-                    "title": "Test Cross-Sells"
+                    "showTitle": false
+                } /-->');
+                ?>
+            </div>
+
+            <h4>Comparison - Single Product Card:</h4>
+            <div style="border: 2px solid #28a745; padding: 20px; margin: 20px 0;">
+                <?php
+                echo do_blocks('<!-- wp:blaze/product-card {
+                    "showTitle": false
                 } /-->');
                 ?>
             </div>
@@ -198,15 +251,15 @@ if (!current_user_can('manage_options')) {
         <?php
         $required_files = [
             'src/blocks/cart-cross-sells/index.js',
-            'src/blocks/cart-cross-sells/edit.js', 
+            'src/blocks/cart-cross-sells/edit.js',
             'src/blocks/cart-cross-sells/save.js',
             'src/blocks/cart-cross-sells/style.scss',
             'templates/blocks/cart-cross-sells.php'
         ];
-        
+
         $plugin_dir = WP_PLUGIN_DIR . '/blaze-gutenberg/';
         $all_files_exist = true;
-        
+
         foreach ($required_files as $file) {
             $file_path = $plugin_dir . $file;
             if (file_exists($file_path)) {
@@ -216,7 +269,7 @@ if (!current_user_can('manage_options')) {
                 $all_files_exist = false;
             }
         }
-        
+
         if ($all_files_exist) {
             echo "<div class='status success'>✅ All required files exist</div>";
         }
@@ -232,10 +285,11 @@ if (!current_user_can('manage_options')) {
             <li>Configure the block settings as needed</li>
             <li>View the frontend to see the cross-sell products</li>
         </ol>
-        
+
         <p><strong>Note:</strong> This test file should be removed from production sites for security.</p>
     </div>
 
     <?php wp_footer(); ?>
 </body>
+
 </html>

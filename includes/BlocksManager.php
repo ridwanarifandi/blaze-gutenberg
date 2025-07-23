@@ -1121,7 +1121,7 @@ class BlocksManager
             'showColorSwatches' => true,
             'showAddToCart' => true,
             'showEnquireButton' => true,
-            'showTitle' => true,
+            'showTitle' => false,
             'title' => __('You may also like', 'blaze-gutenberg'),
         ]);
 

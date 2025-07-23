@@ -34,14 +34,14 @@ $block_id = 'blaze-cart-cross-sells-' . wp_generate_uuid4();
 
 <div class="blaze-cart-cross-sells-block" id="<?php echo esc_attr($block_id); ?>"
     style="--primary-bg-color: <?php echo esc_attr($primary_bg_color); ?>; --primary-font-color: <?php echo esc_attr($primary_font_color); ?>; --price-color: <?php echo esc_attr($price_color); ?>;">
-    
+
     <?php if ($show_title && !empty($title)): ?>
         <h2 class="cross-sells-title"><?php echo esc_html($title); ?></h2>
     <?php endif; ?>
 
     <div class="cross-sells-grid"
         style="--columns-desktop: <?php echo esc_attr($columns_desktop); ?>; --columns-tablet: <?php echo esc_attr($columns_tablet); ?>; --columns-mobile: <?php echo esc_attr($columns_mobile); ?>;">
-        
+
         <?php foreach ($cross_sell_products as $product): ?>
             <?php
             // Prepare product data for the product card template
@@ -64,8 +64,8 @@ $block_id = 'blaze-cart-cross-sells-' . wp_generate_uuid4();
                 'add_to_cart_text' => $product->add_to_cart_text(),
             ];
 
-            // Prepare attributes for product card
-            $card_attributes = [
+            // Prepare attributes for product card (this variable is used in product-card.php)
+            $attributes = [
                 'showBadges' => $show_badges,
                 'showRating' => $show_rating,
                 'showColorSwatches' => $show_color_swatches,
@@ -73,8 +73,9 @@ $block_id = 'blaze-cart-cross-sells-' . wp_generate_uuid4();
                 'showEnquireButton' => $show_enquire_button,
             ];
             ?>
-            
-            <div class="cross-sell-item">
+
+            <div class="cross-sell-item"
+                style="--primary-bg-color: <?php echo esc_attr($primary_bg_color); ?>; --primary-font-color: <?php echo esc_attr($primary_font_color); ?>; --price-color: <?php echo esc_attr($price_color); ?>;">
                 <?php include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/product-card.php'; ?>
             </div>
         <?php endforeach; ?>

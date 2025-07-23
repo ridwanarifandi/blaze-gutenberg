@@ -91,7 +91,7 @@ registerBlockType("blaze/cart-cross-sells", {
 		},
 		showTitle: {
 			type: "boolean",
-			default: true,
+			default: false,
 		},
 		title: {
 			type: "string",
