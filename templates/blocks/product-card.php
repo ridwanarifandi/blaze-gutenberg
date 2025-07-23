@@ -33,7 +33,6 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
 ?>
 
 <div class="blaze-product-card" id="<?php echo esc_attr($card_id); ?>" data-id="<?php echo esc_attr($product_id); ?>">
-    <!-- Product Image -->
     <div class="product-image-container">
         <a href="<?php echo esc_url($permalink); ?>" class="product-image-link" alt="<?php echo esc_attr($title); ?>">
             <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>"
@@ -45,7 +44,6 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
             <?php endif; ?>
         </a>
 
-        <!-- Badges -->
         <?php if ($attributes['showBadges']): ?>
             <div class="product-badges">
                 <?php if ($on_sale): ?>
@@ -63,9 +61,7 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
         <?php endif; ?>
     </div>
 
-    <!-- Product Info -->
     <div class="product-info">
-        <!-- Product Title -->
         <h3 class="product-title">
             <a href="<?php echo esc_url($permalink); ?>">
                 <?php echo wp_kses($title, array(
@@ -80,7 +76,6 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
             </a>
         </h3>
 
-        <!-- Color Swatches -->
         <?php if ($attributes['showColorSwatches'] && !empty($product_attributes)): ?>
             <div class="product-swatches">
                 <?php foreach ($product_attributes as $attribute):
@@ -96,7 +91,6 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
             </div>
         <?php endif; ?>
 
-        <!-- Reviews -->
         <?php if ($attributes['showRating'] && $rating > 0): ?>
             <div class="product-reviews">
                 <div class="stars"
@@ -129,12 +123,10 @@ $card_id = 'product-card-' . $product_id . '-' . wp_generate_uuid4();
             </div>
         <?php endif; ?>
 
-        <!-- Price -->
         <div class="product-price">
             <?php echo wp_kses_post($price_html); ?>
         </div>
 
-        <!-- Action Buttons -->
         <?php if ($attributes['showAddToCart'] || $attributes['showEnquireButton']): ?>
             <div class="product-actions">
                 <?php if ($attributes['showAddToCart']): ?>
