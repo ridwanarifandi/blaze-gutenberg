@@ -61,6 +61,12 @@ class BlocksManager
             'render_callback' => [$this, 'render_filter_by_stock_status'],
             'style' => 'blaze-gutenberg-style',
         ]);
+
+        // Register Cart Cross-Sells block
+        register_block_type('blaze/cart-cross-sells', [
+            'render_callback' => [$this, 'render_cart_cross_sells'],
+            'style' => 'blaze-gutenberg-style',
+        ]);
     }
 
     /**
@@ -1088,5 +1094,92 @@ class BlocksManager
 
         // Return default color if nothing found
         return '#6b7280';
+    }
+
+    /**
+     * Render Cart Cross-Sells block
+     */
+    public function render_cart_cross_sells($attributes, $content)
+    {
+        // Check if WooCommerce is active
+        if (!class_exists('WooCommerce')) {
+            return '<div class="blaze-cart-cross-sells-error">' .
+                esc_html__('WooCommerce is required for this block.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        $attributes = wp_parse_args($attributes, [
+            'columnsDesktop' => 4,
+            'columnsTablet' => 3,
+            'columnsMobile' => 1,
+            'limit' => 4,
+            'primaryBackgroundColor' => '#1e3a8a',
+            'primaryFontColor' => '#ffffff',
+            'priceColor' => '#1e3a8a',
+            'showBadges' => true,
+            'showRating' => true,
+            'showColorSwatches' => true,
+            'showAddToCart' => true,
+            'showEnquireButton' => true,
+            'showTitle' => true,
+            'title' => __('You may also like', 'blaze-gutenberg'),
+        ]);
+
+        // Get cross-sell products from cart
+        $cross_sell_products = $this->get_cart_cross_sells($attributes['limit']);
+
+        if (empty($cross_sell_products)) {
+            return '<div class="blaze-cart-cross-sells-empty">' .
+                esc_html__('No cross-sell products found.', 'blaze-gutenberg') .
+                '</div>';
+        }
+
+        // Start output buffering
+        ob_start();
+
+        // Include the template
+        include BLAZE_GUTENBERG_PLUGIN_DIR . 'templates/blocks/cart-cross-sells.php';
+
+        return ob_get_clean();
+    }
+
+    /**
+     * Get cross-sell products from WooCommerce cart
+     */
+    private function get_cart_cross_sells($limit = 4)
+    {
+        // Check if cart exists
+        if (!WC()->cart) {
+            return [];
+        }
+
+        $cross_sells = [];
+        $cart_items = WC()->cart->get_cart();
+
+        // Get cross-sell product IDs from cart items
+        $cross_sell_ids = [];
+        foreach ($cart_items as $cart_item) {
+            $product = $cart_item['data'];
+            if ($product) {
+                $product_cross_sells = $product->get_cross_sell_ids();
+                if (!empty($product_cross_sells)) {
+                    $cross_sell_ids = array_merge($cross_sell_ids, $product_cross_sells);
+                }
+            }
+        }
+
+        // Remove duplicates and limit
+        $cross_sell_ids = array_unique($cross_sell_ids);
+        $cross_sell_ids = array_slice($cross_sell_ids, 0, $limit);
+
+        // Get product objects
+        foreach ($cross_sell_ids as $product_id) {
+            $product = wc_get_product($product_id);
+            if ($product && $product->is_visible()) {
+                $cross_sells[] = $product;
+            }
+        }
+
+        return $cross_sells;
     }
 }
