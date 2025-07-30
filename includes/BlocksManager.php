@@ -427,10 +427,11 @@ class BlocksManager
 
         // Filter by featured products
         if (!empty($attributes['featuredOnly']) && $attributes['featuredOnly']) {
-            $args['meta_query'][] = [
-                'key' => '_featured',
-                'value' => 'yes',
-                'compare' => '=',
+            $args['tax_query'][] = [
+                'taxonomy' => 'product_visibility',
+                'field' => 'name',
+                'terms' => 'featured',
+                'operator' => 'IN',
             ];
         }
 
@@ -438,6 +439,8 @@ class BlocksManager
         if (empty($args['meta_query'])) {
             unset($args['meta_query']);
         }
+
+        do_action("qm/info", $args);
 
         $query = new \WP_Query($args);
 
