@@ -3,7 +3,7 @@
 Plugin Name: Blaze Commerce - Gutenberg
 Plugin URI: https://www.blazecommerce.io
 Description: The official plugin that serves gutenberg blocks for Blaze Commerce.
-Version: 1.0.6
+Version: 1.0.7
 Requires Plugins: woocommerce
 Author: Blaze Commerce
 Author URI: https://www.blazecommerce.io
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('BLAZE_GUTENBERG_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('BLAZE_GUTENBERG_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('BLAZE_GUTENBERG_VERSION', '1.0.6');
+define('BLAZE_GUTENBERG_VERSION', '1.0.7');
 define('BLAZE_GUTENBERG_PLUGIN_FILE', __FILE__);
 
 // Check if WooCommerce is active
