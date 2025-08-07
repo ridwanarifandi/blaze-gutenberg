@@ -472,6 +472,12 @@ class BlocksManager
             'number' => $attributes['limit'] ?? 12,
         ];
 
+        // Handle priority sorting - use meta_value_num
+        if (isset($attributes['orderBy']) && $attributes['orderBy'] === 'priority') {
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = '_blaze_category_priority';
+        }
+
         // Filter by specific category IDs
         if (!empty($attributes['selectedCategories'])) {
             $args['include'] = array_map('intval', $attributes['selectedCategories']);
@@ -497,11 +503,14 @@ class BlocksManager
                 'count' => $category->count,
                 'image' => $image_url,
                 'link' => get_term_link($category),
+                'priority' => \BlazeGutenberg\CategoryPriority::get_priority($category->term_id),
             ];
         }
 
         return $formatted_categories;
     }
+
+
 
     /**
      * Register REST API endpoints
@@ -635,6 +644,12 @@ class BlocksManager
             'order' => $order,
         ];
 
+        // Handle priority sorting - use meta_value_num
+        if ($orderby === 'priority') {
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = '_blaze_category_priority';
+        }
+
         // If parent is specified, get only child categories
         if ($parent !== null) {
             $args['parent'] = intval($parent);
@@ -660,6 +675,7 @@ class BlocksManager
                 'image' => $image_url,
                 'link' => get_term_link($category),
                 'parent' => $category->parent,
+                'priority' => \BlazeGutenberg\CategoryPriority::get_priority($category->term_id),
             ];
         }
 

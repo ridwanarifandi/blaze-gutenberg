@@ -3,7 +3,7 @@
 Plugin Name: Blaze Commerce - Gutenberg
 Plugin URI: https://www.blazecommerce.io
 Description: The official plugin that serves gutenberg blocks for Blaze Commerce.
-Version: 1.0.7
+Version: 1.1.0
 Requires Plugins: woocommerce
 Author: Blaze Commerce
 Author URI: https://www.blazecommerce.io
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('BLAZE_GUTENBERG_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('BLAZE_GUTENBERG_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('BLAZE_GUTENBERG_VERSION', '1.0.7');
+define('BLAZE_GUTENBERG_VERSION', '1.1.0');
 define('BLAZE_GUTENBERG_PLUGIN_FILE', __FILE__);
 
 // Check if WooCommerce is active
@@ -46,10 +46,17 @@ require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/helpers/filter-helpers.php';
 // Include product priority functionality
 require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/ProductPriority.php';
 
+// Include category priority functionality
+require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/CategoryPriority.php';
+
+// Register activation hook for category priority migration
+register_activation_hook(__FILE__, ['BlazeGutenberg\CategoryPriority', 'activate_plugin']);
+
 // Include test file for development (only in debug mode)
 if (defined('WP_DEBUG') && WP_DEBUG) {
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-filter-blocks.php';
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-priority-feature.php';
+    require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-category-priority-feature.php';
 }
 
 // Activation hook

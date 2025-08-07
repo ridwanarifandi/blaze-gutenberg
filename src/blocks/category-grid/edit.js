@@ -72,26 +72,29 @@ export default function Edit({ attributes, setAttributes }) {
 
 		// Filter by selected categories
 		if (selectedCategories.length > 0) {
-			filtered = filtered.filter(cat => 
-				selectedCategories.includes(cat.id.toString())
+			filtered = filtered.filter((cat) =>
+				selectedCategories.includes(cat.id.toString()),
 			);
 		}
 
 		// Filter empty categories if hideEmpty is true
 		if (hideEmpty) {
-			filtered = filtered.filter(cat => cat.count > 0);
+			filtered = filtered.filter((cat) => cat.count > 0);
 		}
 
 		// Sort categories
 		filtered.sort((a, b) => {
 			let comparison = 0;
-			
+
 			switch (orderBy) {
 				case "name":
 					comparison = a.name.localeCompare(b.name);
 					break;
 				case "count":
 					comparison = a.count - b.count;
+					break;
+				case "priority":
+					comparison = (a.priority || 0) - (b.priority || 0);
 					break;
 				case "id":
 					comparison = a.id - b.id;
@@ -113,6 +116,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const orderByOptions = [
 		{ label: __("Name", "blaze-gutenberg"), value: "name" },
 		{ label: __("Product Count", "blaze-gutenberg"), value: "count" },
+		{ label: __("Priority", "blaze-gutenberg"), value: "priority" },
 		{ label: __("ID", "blaze-gutenberg"), value: "id" },
 	];
 
@@ -127,10 +131,14 @@ export default function Edit({ attributes, setAttributes }) {
 				<PanelBody
 					title={__("Category Selection", "blaze-gutenberg")}
 					initialOpen={true}>
-					
 					{categories.length > 0 && (
 						<div className="blaze-category-selection">
-							<p>{__("Select categories to display (leave empty for all):", "blaze-gutenberg")}</p>
+							<p>
+								{__(
+									"Select categories to display (leave empty for all):",
+									"blaze-gutenberg",
+								)}
+							</p>
 							{categories.map((category) => (
 								<CheckboxControl
 									key={category.id}
@@ -139,7 +147,9 @@ export default function Edit({ attributes, setAttributes }) {
 									onChange={(checked) => {
 										const newSelection = checked
 											? [...selectedCategories, category.id.toString()]
-											: selectedCategories.filter(id => id !== category.id.toString());
+											: selectedCategories.filter(
+													(id) => id !== category.id.toString(),
+											  );
 										setAttributes({ selectedCategories: newSelection });
 									}}
 								/>
@@ -161,7 +171,6 @@ export default function Edit({ attributes, setAttributes }) {
 				<PanelBody
 					title={__("Sorting & Display", "blaze-gutenberg")}
 					initialOpen={false}>
-					
 					<SelectControl
 						label={__("Order By", "blaze-gutenberg")}
 						value={orderBy}
@@ -200,7 +209,6 @@ export default function Edit({ attributes, setAttributes }) {
 				<PanelBody
 					title={__("Responsive Columns", "blaze-gutenberg")}
 					initialOpen={false}>
-					
 					<RangeControl
 						label={__("Columns (Desktop)", "blaze-gutenberg")}
 						value={columnsDesktop}
