@@ -42,28 +42,42 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const [categories, setCategories] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [availableOrderOptions, setAvailableOrderOptions] = useState([]);
 
 	const blockProps = useBlockProps({
 		className: "blaze-category-grid-editor",
 	});
 
-	// Fetch categories
+	// Fetch categories and order options
 	useEffect(() => {
-		const fetchCategories = async () => {
+		const fetchData = async () => {
 			setIsLoading(true);
 			try {
+				// Fetch categories
 				const categoriesData = await apiFetch({
 					path: "/blaze/v1/product-categories",
 				});
 				setCategories(categoriesData);
+
+				// Fetch available order options
+				const orderOptionsData = await apiFetch({
+					path: "/blaze/v1/category-order-options",
+				});
+				setAvailableOrderOptions(orderOptionsData);
 			} catch (error) {
-				console.error("Error fetching categories:", error);
+				console.error("Error fetching data:", error);
+				// Set default options if API fails
+				setAvailableOrderOptions([
+					{ label: __("Name", "blaze-gutenberg"), value: "name" },
+					{ label: __("Product Count", "blaze-gutenberg"), value: "count" },
+					{ label: __("ID", "blaze-gutenberg"), value: "id" },
+				]);
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
-		fetchCategories();
+		fetchData();
 	}, []);
 
 	// Filter and sort categories based on settings
@@ -112,13 +126,15 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const filteredCategories = getFilteredCategories();
 
-	// Options for select controls
-	const orderByOptions = [
-		{ label: __("Name", "blaze-gutenberg"), value: "name" },
-		{ label: __("Product Count", "blaze-gutenberg"), value: "count" },
-		{ label: __("Priority", "blaze-gutenberg"), value: "priority" },
-		{ label: __("ID", "blaze-gutenberg"), value: "id" },
-	];
+	// Options for select controls - use API data or fallback to default
+	const orderByOptions =
+		availableOrderOptions.length > 0
+			? availableOrderOptions
+			: [
+					{ label: __("Name", "blaze-gutenberg"), value: "name" },
+					{ label: __("Product Count", "blaze-gutenberg"), value: "count" },
+					{ label: __("ID", "blaze-gutenberg"), value: "id" },
+			  ];
 
 	const orderOptions = [
 		{ label: __("Ascending", "blaze-gutenberg"), value: "ASC" },

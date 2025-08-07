@@ -46,17 +46,18 @@ require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/helpers/filter-helpers.php';
 // Include product priority functionality
 require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/ProductPriority.php';
 
-// Include category priority functionality
-require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/CategoryPriority.php';
+// Category priority functionality has been removed
+// Integration with admin-site-enhancement-pro plugin for term ordering
 
-// Register activation hook for category priority migration
-register_activation_hook(__FILE__, ['BlazeGutenberg\CategoryPriority', 'activate_plugin']);
+// Include admin notices for term order integration
+require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'includes/AdminNotices.php';
 
 // Include test file for development (only in debug mode)
 if (defined('WP_DEBUG') && WP_DEBUG) {
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-filter-blocks.php';
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-priority-feature.php';
-    require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-category-priority-feature.php';
+    require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-term-order-integration.php';
+    require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-admin-notices.php';
 }
 
 // Activation hook

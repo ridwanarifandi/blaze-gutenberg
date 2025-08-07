@@ -18,3 +18,6 @@ require_once __DIR__ . '/attribute-helpers.php';
 
 // Load category helper functions
 require_once __DIR__ . '/category-helpers.php';
+
+// Load plugin detection helper functions
+require_once __DIR__ . '/plugin-detection.php';

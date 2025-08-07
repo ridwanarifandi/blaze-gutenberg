@@ -30,103 +30,12 @@ class CategoryPriority
      */
     public static function setup_hooks()
     {
-        // Add priority field to category editor
-        add_action('product_cat_add_form_fields', [__CLASS__, 'add_priority_field_new']);
-        add_action('product_cat_edit_form_fields', [__CLASS__, 'add_priority_field_edit']);
-        add_action('created_product_cat', [__CLASS__, 'save_priority_field']);
-        add_action('edited_product_cat', [__CLASS__, 'save_priority_field']);
-
-        // Add priority column to categories list
-        add_filter('manage_edit-product_cat_columns', [__CLASS__, 'add_priority_column']);
-        add_action('manage_product_cat_custom_column', [__CLASS__, 'display_priority_column'], 10, 3);
-
-        // Add admin styles for priority column
-        add_action('admin_head', [__CLASS__, 'add_admin_styles']);
+        // Category priority functionality has been removed
+        // Integration with admin-site-enhancement-pro plugin for term ordering
+        // No hooks needed as priority fields and columns are no longer used
     }
 
-    /**
-     * Add priority field to new category form
-     */
-    public static function add_priority_field_new()
-    {
-        ?>
-        <div class="form-field">
-            <label for="blaze_category_priority"><?php esc_html_e('Priority', 'blaze-gutenberg'); ?></label>
-            <input type="number" name="blaze_category_priority" id="blaze_category_priority"
-                value="<?php echo esc_attr(self::DEFAULT_PRIORITY); ?>" min="0" step="1" />
-            <p class="description">
-                <?php esc_html_e('Set category priority for manual sorting. Higher numbers appear first. Default is 0.', 'blaze-gutenberg'); ?>
-            </p>
-        </div>
-        <?php
-    }
 
-    /**
-     * Add priority field to edit category form
-     */
-    public static function add_priority_field_edit($term)
-    {
-        $priority = self::get_priority($term->term_id);
-        ?>
-        <tr class="form-field">
-            <th scope="row" valign="top">
-                <label for="blaze_category_priority"><?php esc_html_e('Priority', 'blaze-gutenberg'); ?></label>
-            </th>
-            <td>
-                <input type="number" name="blaze_category_priority" id="blaze_category_priority"
-                    value="<?php echo esc_attr($priority); ?>" min="0" step="1" />
-                <p class="description">
-                    <?php esc_html_e('Set category priority for manual sorting. Higher numbers appear first. Default is 0.', 'blaze-gutenberg'); ?>
-                </p>
-            </td>
-        </tr>
-        <?php
-    }
-
-    /**
-     * Save priority field value
-     */
-    public static function save_priority_field($term_id)
-    {
-        if (!isset($_POST['blaze_category_priority'])) {
-            return;
-        }
-
-        $priority = intval($_POST['blaze_category_priority']);
-        if ($priority < 0) {
-            $priority = self::DEFAULT_PRIORITY;
-        }
-
-        self::set_priority($term_id, $priority);
-    }
-
-    /**
-     * Add priority column to categories list
-     */
-    public static function add_priority_column($columns)
-    {
-        // Insert priority column after the name column
-        $new_columns = [];
-        foreach ($columns as $key => $value) {
-            $new_columns[$key] = $value;
-            if ($key === 'name') {
-                $new_columns['blaze_priority'] = __('Priority', 'blaze-gutenberg');
-            }
-        }
-        return $new_columns;
-    }
-
-    /**
-     * Display priority value in categories list column
-     */
-    public static function display_priority_column($content, $column_name, $term_id)
-    {
-        if ($column_name === 'blaze_priority') {
-            $priority = self::get_priority($term_id);
-            return esc_html($priority);
-        }
-        return $content;
-    }
 
 
 
@@ -242,34 +151,7 @@ class CategoryPriority
         ]);
     }
 
-    /**
-     * Add admin styles for priority column
-     */
-    public static function add_admin_styles()
-    {
-        $screen = get_current_screen();
 
-        // Only add styles on product categories list page
-        if ($screen && $screen->id === 'edit-product_cat') {
-            echo '<style>
-                .wp-list-table .column-blaze_priority {
-                    width: 70px;
-                    max-width: 70px;
-                    text-align: center;
-                }
-                .wp-list-table .column-blaze_priority a {
-                    display: block;
-                    width: 100%;
-                }
-                @media screen and (max-width: 782px) {
-                    .wp-list-table .column-blaze_priority {
-                        width: 60px;
-                        max-width: 60px;
-                    }
-                }
-            </style>';
-        }
-    }
 }
 
 // Initialize the class

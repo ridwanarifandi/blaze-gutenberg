@@ -464,18 +464,19 @@ class BlocksManager
      */
     private function get_categories($attributes)
     {
+        $orderby = $attributes['orderBy'] ?? 'name';
+
         $args = [
             'taxonomy' => 'product_cat',
             'hide_empty' => $attributes['hideEmpty'] ?? true,
-            'orderby' => $attributes['orderBy'] ?? 'name',
+            'orderby' => blaze_get_fallback_orderby($orderby),
             'order' => $attributes['order'] ?? 'ASC',
             'number' => $attributes['limit'] ?? 12,
         ];
 
-        // Handle priority sorting - use meta_value_num
-        if (isset($attributes['orderBy']) && $attributes['orderBy'] === 'priority') {
-            $args['orderby'] = 'meta_value_num';
-            $args['meta_key'] = '_blaze_category_priority';
+        // Handle term order sorting if available
+        if (blaze_should_use_term_order($orderby)) {
+            $args['orderby'] = 'term_order';
         }
 
         // Filter by specific category IDs
@@ -503,7 +504,6 @@ class BlocksManager
                 'count' => $category->count,
                 'image' => $image_url,
                 'link' => get_term_link($category),
-                'priority' => \BlazeGutenberg\CategoryPriority::get_priority($category->term_id),
             ];
         }
 
@@ -556,6 +556,13 @@ class BlocksManager
         register_rest_route('blaze/v1', '/product-stock-status-counts', [
             'methods' => 'GET',
             'callback' => [$this, 'get_product_stock_status_counts_api'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        // Category order options endpoint
+        register_rest_route('blaze/v1', '/category-order-options', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_category_order_options_api'],
             'permission_callback' => '__return_true',
         ]);
     }
@@ -640,14 +647,13 @@ class BlocksManager
         $args = [
             'taxonomy' => 'product_cat',
             'hide_empty' => $hide_empty,
-            'orderby' => $orderby,
+            'orderby' => blaze_get_fallback_orderby($orderby),
             'order' => $order,
         ];
 
-        // Handle priority sorting - use meta_value_num
-        if ($orderby === 'priority') {
-            $args['orderby'] = 'meta_value_num';
-            $args['meta_key'] = '_blaze_category_priority';
+        // Handle term order sorting if available
+        if (blaze_should_use_term_order($orderby)) {
+            $args['orderby'] = 'term_order';
         }
 
         // If parent is specified, get only child categories
@@ -675,7 +681,6 @@ class BlocksManager
                 'image' => $image_url,
                 'link' => get_term_link($category),
                 'parent' => $category->parent,
-                'priority' => \BlazeGutenberg\CategoryPriority::get_priority($category->term_id),
             ];
         }
 
@@ -1212,5 +1217,16 @@ class BlocksManager
         }
 
         return $cross_sells;
+    }
+
+    /**
+     * API endpoint to get available category order options
+     */
+    public function get_category_order_options_api($request)
+    {
+        // Use helper function to get available order options
+        $order_options = blaze_get_available_category_order_options();
+
+        return rest_ensure_response($order_options);
     }
 }
