@@ -402,6 +402,16 @@ class BlocksManager
             'meta_query' => [],
         ];
 
+        // Handle priority sorting
+        if (isset($attributes['orderBy']) && $attributes['orderBy'] === 'priority') {
+            $args['orderby'] = 'menu_order';
+
+            // For priority, we want higher numbers first (DESC), but allow override
+            if (!isset($attributes['order'])) {
+                $args['order'] = 'DESC';
+            }
+        }
+
         // Filter by specific product IDs
         if (!empty($attributes['productIds'])) {
             $args['post__in'] = $attributes['productIds'];
@@ -446,6 +456,8 @@ class BlocksManager
 
         return $query->posts;
     }
+
+
 
     /**
      * Get categories based on attributes

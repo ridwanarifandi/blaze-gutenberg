@@ -94,6 +94,7 @@ export default function Edit({ attributes, setAttributes }) {
 		{ label: __("Date", "blaze-gutenberg"), value: "date" },
 		{ label: __("Title", "blaze-gutenberg"), value: "title" },
 		{ label: __("Menu Order", "blaze-gutenberg"), value: "menu_order" },
+		{ label: __("Priority", "blaze-gutenberg"), value: "priority" },
 		{ label: __("Random", "blaze-gutenberg"), value: "rand" },
 	];
 
