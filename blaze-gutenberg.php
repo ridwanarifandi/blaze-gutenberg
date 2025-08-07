@@ -58,6 +58,7 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-priority-feature.php';
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-term-order-integration.php';
     require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-admin-notices.php';
+    require_once BLAZE_GUTENBERG_PLUGIN_DIR . 'test-term-order-options.php';
 }
 
 // Activation hook

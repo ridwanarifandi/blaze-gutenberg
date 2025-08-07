@@ -504,7 +504,7 @@ class BlocksManager
             $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
             $image_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'medium') : '';
 
-            $formatted_categories[] = [
+            $category_data = [
                 'id' => $category->term_id,
                 'name' => $category->name,
                 'slug' => $category->slug,
@@ -513,6 +513,13 @@ class BlocksManager
                 'image' => $image_url,
                 'link' => get_term_link($category),
             ];
+
+            // Add term_order if available
+            if (isset($category->term_order)) {
+                $category_data['term_order'] = $category->term_order;
+            }
+
+            $formatted_categories[] = $category_data;
         }
 
         return $formatted_categories;
@@ -680,7 +687,7 @@ class BlocksManager
             $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
             $image_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'medium') : '';
 
-            $formatted_categories[] = [
+            $category_data = [
                 'id' => $category->term_id,
                 'name' => $category->name,
                 'slug' => $category->slug,
@@ -690,6 +697,13 @@ class BlocksManager
                 'link' => get_term_link($category),
                 'parent' => $category->parent,
             ];
+
+            // Add term_order if available
+            if (isset($category->term_order)) {
+                $category_data['term_order'] = $category->term_order;
+            }
+
+            $formatted_categories[] = $category_data;
         }
 
         return rest_ensure_response($formatted_categories);
@@ -1232,8 +1246,18 @@ class BlocksManager
      */
     public function get_category_order_options_api($request)
     {
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('get_category_order_options_api called');
+        }
+
         // Use helper function to get available order options
         $order_options = blaze_get_available_category_order_options();
+
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('get_category_order_options_api returning: ' . json_encode($order_options));
+        }
 
         return rest_ensure_response($order_options);
     }

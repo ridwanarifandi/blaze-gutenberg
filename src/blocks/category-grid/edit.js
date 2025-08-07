@@ -63,6 +63,7 @@ export default function Edit({ attributes, setAttributes }) {
 				const orderOptionsData = await apiFetch({
 					path: "/blaze/v1/category-order-options",
 				});
+				console.log("Order options received:", orderOptionsData);
 				setAvailableOrderOptions(orderOptionsData);
 			} catch (error) {
 				console.error("Error fetching data:", error);
@@ -107,8 +108,10 @@ export default function Edit({ attributes, setAttributes }) {
 				case "count":
 					comparison = a.count - b.count;
 					break;
-				case "priority":
-					comparison = (a.priority || 0) - (b.priority || 0);
+				case "term_order":
+					// For term_order, categories should already be sorted by server
+					// But we can fallback to ID if term_order is not available
+					comparison = (a.term_order || a.id) - (b.term_order || b.id);
 					break;
 				case "id":
 					comparison = a.id - b.id;

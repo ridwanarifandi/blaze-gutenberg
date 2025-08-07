@@ -16,6 +16,10 @@ if (!defined('WP_DEBUG') || !WP_DEBUG) {
     return;
 }
 
+// For testing purposes, force term order to be available
+// Remove this line when testing with actual plugin
+define('BLAZE_FORCE_TERM_ORDER_TEST', true);
+
 /**
  * Test Term Order Integration
  */
