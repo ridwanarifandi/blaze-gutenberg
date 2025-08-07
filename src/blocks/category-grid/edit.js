@@ -59,19 +59,11 @@ export default function Edit({ attributes, setAttributes }) {
 				});
 				setCategories(categoriesData);
 
-				// Fetch available order options
-				const orderOptionsData = await apiFetch({
-					path: "/blaze/v1/category-order-options",
-				});
-				console.log("Order options received:", orderOptionsData);
-				setAvailableOrderOptions(orderOptionsData);
-			} catch (error) {
-				console.error("Error fetching data:", error);
-				// Set default options if API fails
 				setAvailableOrderOptions([
 					{ label: __("Name", "blaze-gutenberg"), value: "name" },
 					{ label: __("Product Count", "blaze-gutenberg"), value: "count" },
 					{ label: __("ID", "blaze-gutenberg"), value: "id" },
+					{ label: __("Term Order", "blaze-gutenberg"), value: "term_order" },
 				]);
 			} finally {
 				setIsLoading(false);
