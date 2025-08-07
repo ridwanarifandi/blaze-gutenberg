@@ -450,7 +450,10 @@ class BlocksManager
             unset($args['meta_query']);
         }
 
-        do_action("qm/info", $args);
+        do_action(
+            "qm/info",
+            $args
+        );
 
         $query = new \WP_Query($args);
 
@@ -483,6 +486,11 @@ class BlocksManager
         if (!empty($attributes['selectedCategories'])) {
             $args['include'] = array_map('intval', $attributes['selectedCategories']);
         }
+
+        do_action(
+            "qm/info",
+            $args
+        );
 
         $categories = get_terms($args);
 
