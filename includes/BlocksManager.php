@@ -493,6 +493,12 @@ class BlocksManager
             return [];
         }
 
+        // Apply PHP sorting if needed (especially when using 'include' parameter)
+        // WordPress get_terms() may ignore orderby when include is used
+        if (!empty($categories)) {
+            $categories = $this->sort_categories_php($categories, $orderby, $attributes['order'] ?? 'ASC');
+        }
+
         // Format categories for template
         $formatted_categories = [];
         foreach ($categories as $category) {
@@ -670,6 +676,12 @@ class BlocksManager
 
         if (is_wp_error($categories)) {
             return rest_ensure_response([]);
+        }
+
+        // Apply PHP sorting if needed (especially when using 'include' parameter)
+        // WordPress get_terms() may ignore orderby when include is used
+        if (!empty($categories)) {
+            $categories = $this->sort_categories_php($categories, $orderby, $order);
         }
 
         $formatted_categories = [];
@@ -1250,5 +1262,78 @@ class BlocksManager
         }
 
         return rest_ensure_response($order_options);
+    }
+
+    /**
+     * Sort categories using PHP when get_terms orderby doesn't work
+     * This is especially needed when using 'include' parameter
+     *
+     * @param array $categories Array of WP_Term objects
+     * @param string $orderby The orderby parameter
+     * @param string $order ASC or DESC
+     * @return array Sorted array of categories
+     */
+    private function sort_categories_php($categories, $orderby, $order = 'ASC')
+    {
+        if (empty($categories) || !is_array($categories)) {
+            return $categories;
+        }
+
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log("sort_categories_php: orderby={$orderby}, order={$order}, count=" . count($categories));
+
+            // Log first few categories before sorting
+            for ($i = 0; $i < min(3, count($categories)); $i++) {
+                $cat = $categories[$i];
+                $term_order = isset($cat->term_order) ? $cat->term_order : 'not_set';
+                error_log("  Before sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, term_order: {$term_order})");
+            }
+        }
+
+        usort($categories, function ($a, $b) use ($orderby, $order) {
+            $comparison = 0;
+
+            switch ($orderby) {
+                case 'name':
+                    $comparison = strcmp($a->name, $b->name);
+                    break;
+
+                case 'count':
+                    $comparison = $a->count - $b->count;
+                    break;
+
+                case 'term_order':
+                    // Get term_order from the term object or default to 0
+                    $a_order = isset($a->term_order) ? (int) $a->term_order : 0;
+                    $b_order = isset($b->term_order) ? (int) $b->term_order : 0;
+                    $comparison = $a_order - $b_order;
+                    break;
+
+                case 'id':
+                    $comparison = $a->term_id - $b->term_id;
+                    break;
+
+                default:
+                    // Default to name sorting
+                    $comparison = strcmp($a->name, $b->name);
+                    break;
+            }
+
+            // Apply order direction
+            return ($order === 'DESC') ? -$comparison : $comparison;
+        });
+
+        // Debug logging after sorting
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log("  After sorting:");
+            for ($i = 0; $i < min(3, count($categories)); $i++) {
+                $cat = $categories[$i];
+                $term_order = isset($cat->term_order) ? $cat->term_order : 'not_set';
+                error_log("  After sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, term_order: {$term_order})");
+            }
+        }
+
+        return $categories;
     }
 }
