@@ -472,15 +472,10 @@ class BlocksManager
         $args = [
             'taxonomy' => 'product_cat',
             'hide_empty' => $attributes['hideEmpty'] ?? true,
-            'orderby' => blaze_get_fallback_orderby($orderby),
+            'orderby' => $orderby, // Use orderby directly without dependency check
             'order' => $attributes['order'] ?? 'ASC',
             'number' => $attributes['limit'] ?? 12,
         ];
-
-        // Handle term order sorting if available
-        if (blaze_should_use_term_order($orderby)) {
-            $args['orderby'] = 'term_order';
-        }
 
         // Filter by specific category IDs
         if (!empty($attributes['selectedCategories'])) {
@@ -662,14 +657,9 @@ class BlocksManager
         $args = [
             'taxonomy' => 'product_cat',
             'hide_empty' => $hide_empty,
-            'orderby' => blaze_get_fallback_orderby($orderby),
+            'orderby' => $orderby, // Use orderby directly without dependency check
             'order' => $order,
         ];
-
-        // Handle term order sorting if available
-        if (blaze_should_use_term_order($orderby)) {
-            $args['orderby'] = 'term_order';
-        }
 
         // If parent is specified, get only child categories
         if ($parent !== null) {

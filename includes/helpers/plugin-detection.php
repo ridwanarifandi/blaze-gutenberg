@@ -139,30 +139,30 @@ if (!function_exists('blaze_get_available_category_order_options')) {
 if (!function_exists('blaze_should_use_term_order')) {
     /**
      * Check if we should use term order for a given orderby value
-     * 
+     *
      * @param string $orderby The orderby value to check
      * @return bool True if we should use term order, false otherwise
+     * @deprecated No longer needed - orderby is used directly without dependency check
      */
     function blaze_should_use_term_order($orderby)
     {
-        return $orderby === 'term_order' && blaze_has_term_order_feature();
+        // Always return true for term_order - let WordPress handle if column doesn't exist
+        return $orderby === 'term_order';
     }
 }
 
 if (!function_exists('blaze_get_fallback_orderby')) {
     /**
      * Get fallback orderby value when term order is not available
-     * 
+     *
      * @param string $requested_orderby The originally requested orderby
      * @return string Fallback orderby value
+     * @deprecated No longer needed - orderby is used directly without dependency check
      */
     function blaze_get_fallback_orderby($requested_orderby)
     {
-        // If term order was requested but not available, fallback to name
-        if ($requested_orderby === 'term_order' && !blaze_has_term_order_feature()) {
-            return 'name';
-        }
-
+        // No fallback needed - use orderby directly
+        // WordPress will handle gracefully if column doesn't exist
         return $requested_orderby;
     }
 }
