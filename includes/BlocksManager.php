@@ -456,8 +456,32 @@ class BlocksManager
         );
 
         $query = new \WP_Query($args);
+        $products = $query->posts;
 
-        return $query->posts;
+        // Apply PHP sorting if needed (especially when using 'post__in' parameter)
+        // WordPress WP_Query may ignore orderby when post__in is used
+        // Also use PHP sorting for menu_order to ensure reliable results
+        $orderby = $attributes['orderBy'] ?? 'date';
+        $order = $attributes['order'] ?? 'DESC';
+
+        $needs_php_sorting = false;
+
+        // Check if we need PHP sorting
+        if (!empty($attributes['productIds']) && !empty($products)) {
+            // When using post__in, WordPress may ignore orderby
+            $needs_php_sorting = true;
+        } elseif (in_array($orderby, ['priority', 'menu_order']) && !empty($products)) {
+            // For menu_order/priority, use PHP sorting for better control
+            $needs_php_sorting = true;
+        }
+
+        if ($needs_php_sorting) {
+            // Map priority to menu_order for sorting
+            $sort_orderby = ($orderby === 'priority') ? 'menu_order' : $orderby;
+            $products = $this->sort_products_php($products, $sort_orderby, $order);
+        }
+
+        return $products;
     }
 
 
@@ -585,6 +609,13 @@ class BlocksManager
             'callback' => [$this, 'get_category_order_options_api'],
             'permission_callback' => '__return_true',
         ]);
+
+        // Product order options endpoint
+        register_rest_route('blaze/v1', '/product-order-options', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_product_order_options_api'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     /**
@@ -592,13 +623,30 @@ class BlocksManager
      */
     public function get_products_api($request)
     {
-        $products = get_posts([
+        $orderby = $request->get_param('orderby') ?: 'title';
+        $order = $request->get_param('order') ?: 'ASC';
+        $limit = $request->get_param('limit') ?: 50;
+
+        $args = [
             'post_type' => 'product',
             'post_status' => 'publish',
-            'posts_per_page' => 50,
-            'orderby' => 'title',
-            'order' => 'ASC',
-        ]);
+            'posts_per_page' => $limit,
+            'orderby' => $orderby,
+            'order' => $order,
+        ];
+
+        // Handle priority/menu_order sorting
+        if ($orderby === 'priority') {
+            $args['orderby'] = 'menu_order';
+        }
+
+        $products = get_posts($args);
+
+        // Apply PHP sorting if needed for better control
+        if (in_array($orderby, ['priority', 'menu_order']) && !empty($products)) {
+            $sort_orderby = ($orderby === 'priority') ? 'menu_order' : $orderby;
+            $products = $this->sort_products_php($products, $sort_orderby, $order);
+        }
 
         $formatted_products = [];
         foreach ($products as $product_post) {
@@ -615,6 +663,7 @@ class BlocksManager
                     'isNew' => $this->is_product_new($product),
                     'rating' => $product->get_average_rating(),
                     'reviewCount' => $product->get_review_count(),
+                    'menuOrder' => $product_post->menu_order, // Add menu_order for debugging
                 ];
             }
         }
@@ -1270,6 +1319,27 @@ class BlocksManager
     }
 
     /**
+     * API endpoint to get available product order options
+     */
+    public function get_product_order_options_api($request)
+    {
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            do_action("qm/debug", 'get_product_order_options_api called');
+        }
+
+        // Get available product order options
+        $order_options = $this->get_available_product_order_options();
+
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            do_action("qm/debug", 'get_product_order_options_api returning: ' . json_encode($order_options));
+        }
+
+        return rest_ensure_response($order_options);
+    }
+
+    /**
      * Sort categories using PHP when get_terms orderby doesn't work
      * This is especially needed when using 'include' parameter
      *
@@ -1343,5 +1413,108 @@ class BlocksManager
         }
 
         return $categories;
+    }
+
+    /**
+     * Sort products using PHP when WP_Query orderby doesn't work reliably
+     * This is especially needed when using 'post__in' parameter or complex queries
+     *
+     * @param array $products Array of WP_Post objects (products)
+     * @param string $orderby The orderby parameter
+     * @param string $order ASC or DESC
+     * @return array Sorted array of products
+     */
+    private function sort_products_php($products, $orderby, $order = 'ASC')
+    {
+        if (empty($products) || !is_array($products)) {
+            return $products;
+        }
+
+        // Debug logging
+        do_action("qm/debug", "sort_products_php: orderby={$orderby}, order={$order}, count=" . count($products));
+
+        // Log first few products before sorting
+        for ($i = 0; $i < min(3, count($products)); $i++) {
+            $product_post = $products[$i];
+            $menu_order = $product_post->menu_order ?? 'not_set';
+            do_action("qm/debug", "  Before sort [{$i}]: {$product_post->post_title} (ID: {$product_post->ID}, menu_order: {$menu_order})");
+        }
+
+        usort($products, function ($a, $b) use ($orderby, $order) {
+            $comparison = 0;
+
+            switch ($orderby) {
+                case 'title':
+                case 'name':
+                    $comparison = strcmp($a->post_title, $b->post_title);
+                    break;
+
+                case 'date':
+                    $a_date = strtotime($a->post_date);
+                    $b_date = strtotime($b->post_date);
+                    $comparison = $a_date - $b_date;
+                    break;
+
+                case 'modified':
+                    $a_modified = strtotime($a->post_modified);
+                    $b_modified = strtotime($b->post_modified);
+                    $comparison = $a_modified - $b_modified;
+                    break;
+
+                case 'menu_order':
+                case 'priority':
+                    // Get menu_order from post object
+                    $a_order = isset($a->menu_order) ? (int) $a->menu_order : 0;
+                    $b_order = isset($b->menu_order) ? (int) $b->menu_order : 0;
+                    $comparison = $a_order - $b_order;
+                    break;
+
+                case 'ID':
+                    $comparison = $a->ID - $b->ID;
+                    break;
+
+                case 'rand':
+                case 'random':
+                    // For random, return random comparison
+                    $comparison = rand(-1, 1);
+                    break;
+
+                default:
+                    // Default to title sorting
+                    $comparison = strcmp($a->post_title, $b->post_title);
+                    break;
+            }
+
+            // Apply order direction
+            return ($order === 'DESC') ? -$comparison : $comparison;
+        });
+
+        // Debug logging after sorting
+        do_action("qm/debug", "  After sorting:");
+        for ($i = 0; $i < min(3, count($products)); $i++) {
+            $product_post = $products[$i];
+            $menu_order = $product_post->menu_order ?? 'not_set';
+            do_action("qm/debug", "  After sort [{$i}]: {$product_post->post_title} (ID: {$product_post->ID}, menu_order: {$menu_order})");
+        }
+
+        return $products;
+    }
+
+    /**
+     * Get available product order options for API/debugging
+     * 
+     * @return array Available order options with labels and values
+     */
+    public function get_available_product_order_options()
+    {
+        return [
+            ['label' => __('Title', 'blaze-gutenberg'), 'value' => 'title'],
+            ['label' => __('Date Created', 'blaze-gutenberg'), 'value' => 'date'],
+            ['label' => __('Date Modified', 'blaze-gutenberg'), 'value' => 'modified'],
+            ['label' => __('Menu Order (Priority)', 'blaze-gutenberg'), 'value' => 'menu_order'],
+            ['label' => __('Priority', 'blaze-gutenberg'), 'value' => 'priority'],
+            ['label' => __('Product ID', 'blaze-gutenberg'), 'value' => 'ID'],
+            ['label' => __('Random', 'blaze-gutenberg'), 'value' => 'rand'],
+        ];
     }
 }
