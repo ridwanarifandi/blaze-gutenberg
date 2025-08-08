@@ -1286,7 +1286,7 @@ class BlocksManager
         do_action("qm/debug", "sort_categories_php: orderby={$orderby}, order={$order}, count=" . count($categories));
 
         // Log first few categories before sorting
-        for ($i = 0; $i < min(3, count($categories)); $i++) {
+        for ($i = 0; $i < count($categories); $i++) {
             $cat = $categories[$i];
             $term_order = isset($cat->term_order) ? $cat->term_order : 'not_set';
             do_action("qm/debug", "  Before sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, term_order: {$term_order})");
