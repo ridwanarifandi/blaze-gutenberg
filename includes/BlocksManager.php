@@ -479,12 +479,15 @@ class BlocksManager
 
         // Filter by specific category IDs
         if (!empty($attributes['selectedCategories'])) {
-            $args['include'] = array_map('intval', $attributes['selectedCategories']);
+            // $args['include'] = array_map('intval', $attributes['selectedCategories']);
         }
 
         do_action(
             "qm/info",
-            $args
+            [
+                'include' => $args['include'] ?? [],
+                'args' => $args
+            ]
         );
 
         $categories = get_terms($args);
