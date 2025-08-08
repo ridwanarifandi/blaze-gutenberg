@@ -35,10 +35,6 @@ class CategoryPriority
         // No hooks needed as priority fields and columns are no longer used
     }
 
-
-
-
-
     /**
      * Get category priority with fallback for missing meta
      */
