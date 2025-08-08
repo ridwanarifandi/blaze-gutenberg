@@ -518,9 +518,10 @@ class BlocksManager
                 'link' => get_term_link($category),
             ];
 
-            // Add term_order if available
-            if (isset($category->term_order)) {
-                $category_data['term_order'] = $category->term_order;
+            // Add WooCommerce category order from term_meta 'order'
+            $wc_order = get_term_meta($category->term_id, 'order', true);
+            if ($wc_order !== '' && $wc_order !== false) {
+                $category_data['term_order'] = (int) $wc_order;
             }
 
             $formatted_categories[] = $category_data;
@@ -703,9 +704,10 @@ class BlocksManager
                 'parent' => $category->parent,
             ];
 
-            // Add term_order if available
-            if (isset($category->term_order)) {
-                $category_data['term_order'] = $category->term_order;
+            // Add WooCommerce category order from term_meta 'order'
+            $wc_order = get_term_meta($category->term_id, 'order', true);
+            if ($wc_order !== '' && $wc_order !== false) {
+                $category_data['term_order'] = (int) $wc_order;
             }
 
             $formatted_categories[] = $category_data;
@@ -1288,8 +1290,9 @@ class BlocksManager
         // Log first few categories before sorting
         for ($i = 0; $i < count($categories); $i++) {
             $cat = $categories[$i];
-            $term_order = isset($cat->term_order) ? $cat->term_order : 'not_set';
-            do_action("qm/debug", "  Before sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, term_order: {$term_order})");
+            $term_order = get_term_meta($cat->term_id, 'order', true);
+            $term_order = $term_order !== '' ? $term_order : 'not_set';
+            do_action("qm/debug", "  Before sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, wc_order: {$term_order})");
         }
 
         usort($categories, function ($a, $b) use ($orderby, $order) {
@@ -1305,9 +1308,14 @@ class BlocksManager
                     break;
 
                 case 'term_order':
-                    // Get term_order from the term object or default to 0
-                    $a_order = isset($a->term_order) ? (int) $a->term_order : 0;
-                    $b_order = isset($b->term_order) ? (int) $b->term_order : 0;
+                    // Get WooCommerce category order from term_meta 'order' field
+                    $a_order = get_term_meta($a->term_id, 'order', true);
+                    $b_order = get_term_meta($b->term_id, 'order', true);
+
+                    // Convert to integer, default to 0 if empty
+                    $a_order = ($a_order !== '' && $a_order !== false) ? (int) $a_order : 0;
+                    $b_order = ($b_order !== '' && $b_order !== false) ? (int) $b_order : 0;
+
                     $comparison = $a_order - $b_order;
                     break;
 
@@ -1329,8 +1337,9 @@ class BlocksManager
         do_action("qm/debug", "  After sorting:");
         for ($i = 0; $i < min(3, count($categories)); $i++) {
             $cat = $categories[$i];
-            $term_order = isset($cat->term_order) ? $cat->term_order : 'not_set';
-            do_action("qm/debug", "  After sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, term_order: {$term_order})");
+            $term_order = get_term_meta($cat->term_id, 'order', true);
+            $term_order = $term_order !== '' ? $term_order : 'not_set';
+            do_action("qm/debug", "  After sort [{$i}]: {$cat->name} (ID: {$cat->term_id}, wc_order: {$term_order})");
         }
 
         return $categories;

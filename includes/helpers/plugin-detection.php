@@ -88,7 +88,13 @@ if (!function_exists('blaze_is_term_order_enabled_for_taxonomy')) {
      */
     function blaze_is_term_order_enabled_for_taxonomy($taxonomy = 'product_cat')
     {
-        // First check if term order feature is available
+        // For WooCommerce product categories, check if WooCommerce is active
+        // WooCommerce has built-in category ordering using term_meta 'order'
+        if ($taxonomy === 'product_cat') {
+            return class_exists('WooCommerce');
+        }
+
+        // For other taxonomies, check if term order feature is available via plugins
         if (!blaze_has_term_order_feature()) {
             return false;
         }
@@ -123,7 +129,7 @@ if (!function_exists('blaze_get_available_category_order_options')) {
         }
 
         if ($term_order_enabled) {
-            $options[] = ['label' => __('Term Order', 'blaze-gutenberg'), 'value' => 'term_order'];
+            $options[] = ['label' => __('Manual Order (WooCommerce)', 'blaze-gutenberg'), 'value' => 'term_order'];
         }
 
         // Debug logging
