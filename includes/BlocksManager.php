@@ -479,7 +479,7 @@ class BlocksManager
 
         // Filter by specific category IDs
         if (!empty($attributes['selectedCategories'])) {
-            // $args['include'] = array_map('intval', $attributes['selectedCategories']);
+            $args['include'] = array_map('intval', $attributes['selectedCategories']);
         }
 
         do_action(
